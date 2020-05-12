@@ -17,6 +17,7 @@ namespace ZealandRoomBooking.Model
         {
             UserId = 1;
             UserId++;
+
         }
     }
 }
