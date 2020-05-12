@@ -1,0 +1,66 @@
+﻿<Page
+    x:Class="ZealandRoomBooking.View.LokalePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ZealandRoomBooking.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Viewbox Grid.Column="1" Grid.Row="0" Height="250" Width="400">
+            <Grid Width="400">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,30">
+                    <TextBlock Text="Lokale:" FontSize="24" TextAlignment="Center"></TextBlock>
+                    <TextBox Text="L24" FontSize="24" TextAlignment="Center"></TextBox>
+                </StackPanel>
+                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,30">
+                    <TextBlock Text="Type:" FontSize="24" TextAlignment="Center"></TextBlock>
+                    <TextBox Text="Klasse" FontSize="24" TextAlignment="Center"></TextBox>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,30">
+                    <TextBlock Text="Bygning:" TextAlignment="Center" FontSize="24"></TextBlock>
+                    <TextBox Text="B1" FontSize="24" TextAlignment="Center"></TextBox>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,30">
+                    <TextBlock Text="Etage:" FontSize="24" TextAlignment="Center"></TextBlock>
+                    <TextBox Text="0" FontSize="24" TextAlignment="Center"></TextBox>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Dato booket:" TextAlignment="Center" FontSize="24"></TextBlock>
+                    <TextBox Text="19/05/2020" TextAlignment="Center" FontSize="24"></TextBox>
+                </StackPanel>
+            </Grid>
+        </Viewbox>
+
+        <Button Grid.Column="1" Grid.Row="1" Content="Book Smartboard" FontSize="44" HorizontalAlignment="Center"></Button>
+
+        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Tilbage"  HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold" Margin="0,0,20,0"/>
+            <Button Content="Home"  HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold"/>
+            <Button Content="Book"  HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold" Margin="20,0,0,0"/>
+        </StackPanel>
+    </Grid>
+</Page>

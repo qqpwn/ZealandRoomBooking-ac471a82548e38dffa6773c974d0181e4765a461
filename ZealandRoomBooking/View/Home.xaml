@@ -1,0 +1,58 @@
+﻿<Page
+    x:Class="ZealandRoomBooking.View.Home"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ZealandRoomBooking.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Background="#fff387">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="1" Width="144" Height="43" HorizontalAlignment="Center" VerticalAlignment="Center" FocusVisualPrimaryBrush="{x:Null}" FontSize="26"
+            FontWeight="Bold"
+            Text="Elev/Lærer"
+            TextAlignment="Center"
+            HorizontalTextAlignment="Center"
+            TextWrapping="Wrap" />
+        <Button
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="3"
+            Width="288"
+            Margin="0,64,72,64"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Stretch"
+            Background="#fff387"
+            BorderBrush="#FF060404"
+            Content="Book Lokale"
+            FontSize="28"
+            FontWeight="Bold" />
+        <Button
+            Grid.Row="3"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="3"
+            Width="287"
+            Height="128"
+            Margin="73,0,0,0"
+            Background="#fff387"
+            BorderBrush="#FF060404"
+            Content="Mine Bookinger"
+            FontSize="28"
+            FontWeight="Bold" />
+
+    </Grid>
+</Page>
