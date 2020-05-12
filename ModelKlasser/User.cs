@@ -4,12 +4,13 @@ using System.Text;
 
 namespace ModelKlasser
 {
-   public class User
+    public class User
     {
         public User()
         {
             //test
             //saf
+            //usaer
         }
 
         public int UserId { get; set; }
