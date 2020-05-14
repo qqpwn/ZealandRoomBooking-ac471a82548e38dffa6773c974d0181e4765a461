@@ -19,15 +19,15 @@ namespace ZealandRoomBooking.ViewModel
                 UserId = user.UserId
             };
 
-            Persistency.PersistencyService.PostObject(bookinger);
+            //Persistency.PersistencyService<Bookinger>.PostObject("Bookinger",);
 
-            LokaleBookinger lokaleBookinger = new LokaleBookinger()
-            {
-                BookingId = bookinger.BookingId,
-                LokaleId = 1
-            };
+            //LokaleBookinger lokaleBookinger = new LokaleBookinger()
+            //{
+            //    BookingId = bookinger.BookingId,
+            //    LokaleId = 1
+            //};
 
-            Persistency.PersistencyService.PostObject(lokaleBookinger);
+            //Persistency.PersistencyService.PostObject(lokaleBookinger);
         }
     }
 }
