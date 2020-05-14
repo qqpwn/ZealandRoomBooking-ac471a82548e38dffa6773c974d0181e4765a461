@@ -13,10 +13,20 @@ namespace ZealandRoomBooking.Model
         public string Type { get; set; }
         public string Navn { get; set; }
         public string Bygning { get; set; }
+        public List<Lokaler> RoomsList = new List<Lokaler>();
 
-        public Lokaler()
+        public Lokaler(int lokaleId, int etage, string type, string navn, string bygning)
         {
+            LokaleId = lokaleId;
+            Etage = etage;
+            Type = type;
+            Navn = navn;
+            Bygning = bygning;
+        }
 
+        public override string ToString()
+        {
+            return $"Navn: {Navn}, Bygning: {Bygning}, Etage: {Etage}";
         }
     }
 }

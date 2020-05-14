@@ -525,6 +525,7 @@ namespace ZealandRoomBooking.Annotations
   /// </summary>
   [MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
   [AttributeUsage(AttributeTargets.All, Inherited = false)]
+  
   public sealed class PublicAPIAttribute : Attribute
   {
     public PublicAPIAttribute() { }
@@ -554,6 +555,7 @@ namespace ZealandRoomBooking.Annotations
   /// 
   /// void M() {
   ///   Multiply(123, 42); // Warning: Return value of pure method is not used
+
   /// }
   /// </code></example>
   [AttributeUsage(AttributeTargets.Method)]
@@ -1077,7 +1079,9 @@ namespace ZealandRoomBooking.Annotations
   /// <summary>
   /// Indicates that the marked parameter is a regular expression pattern.
   /// </summary>
+
   [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property)]
+  
   public sealed class RegexPatternAttribute : Attribute { }
 
   /// <summary>
@@ -1108,6 +1112,7 @@ namespace ZealandRoomBooking.Annotations
   /// </remarks>
   [AttributeUsage(AttributeTargets.Property)]
   public sealed class XamlItemBindingOfItemsControlAttribute : Attribute { }
+
 
   /// <summary>
   /// XAML attribute. Indicates the property of some <c>Style</c>-derived type, that
