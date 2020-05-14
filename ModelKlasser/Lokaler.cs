@@ -16,5 +16,10 @@ namespace ModelKlasser
         public string Type { get; set; }
         public string Navn { get; set; }
         public string Bygning { get; set; }
+
+        public override string ToString()
+        {
+            return $"Navn: {Navn}, Bygning: {Bygning}, Etage: {Etage}";
+        }
     }
 }
