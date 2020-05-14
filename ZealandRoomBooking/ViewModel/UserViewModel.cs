@@ -44,13 +44,14 @@ namespace ZealandRoomBooking.ViewModel
 
             PersistencyService<Bookinger>.PostObject("Bookinger", bookinger);
 
-            LokaleBookinger lokaleBookinger = new LokaleBookinger()
-            {
-                BookingId = bookinger.BookingId,
-                LokaleId = 1
-            };
+            //LokaleBookinger lokaleBookinger = new LokaleBookinger()
+            //{
+            //    BookingId = bookinger.BookingId,
+            //    LokaleId = 1
+            //};
 
             PersistencyService<LokaleBookinger>.PostObject("LokaleBookinger", lokaleBookinger);
+
         }
 
         #region PropertyChangedSupport
