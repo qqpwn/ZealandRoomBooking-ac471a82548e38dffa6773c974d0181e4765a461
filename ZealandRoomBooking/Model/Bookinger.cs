@@ -14,9 +14,9 @@ namespace ZealandRoomBooking.Model
 
         public Bookinger()
         {
-            BookingId = 1;
-            BookingId++;
-            Date = DateTime.Now;
+            //BookingId = 1;
+            //BookingId++;
+            //Date = DateTime.Now;
         }
     }
 }

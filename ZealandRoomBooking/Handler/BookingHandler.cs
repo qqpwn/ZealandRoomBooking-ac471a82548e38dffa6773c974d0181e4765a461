@@ -10,22 +10,22 @@ namespace ZealandRoomBooking.Handler
 {
     class BookingHandler
     {
-        public UserViewModel UserViewModel { get; set; }
-        public BookingerViewModel BookingerViewModel { get; set; }
+        //public UserViewModel UserViewModel { get; set; }
+        //public BookingerViewModel BookingerViewModel { get; set; }
 
-        public BookingHandler(BookingerViewModel bookingerViewModel)
-        {
-            BookingHandler = bookingerViewModel;
-        }
+        //public BookingHandler(BookingerViewModel bookingerViewModel)
+        //{
+        //    BookingHandler = bookingerViewModel;
+        //}
 
-        public void CreateBooking()
-        {
+        //public void CreateBooking()
+        //{
 
-        }
+        //}
 
-        public async void DeleteBooking()
-        {
+        //public async void DeleteBooking()
+        //{
 
-        }
+        //}
     }
 }

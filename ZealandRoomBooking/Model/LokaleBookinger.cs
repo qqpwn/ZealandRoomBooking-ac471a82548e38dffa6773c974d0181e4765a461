@@ -15,7 +15,7 @@ namespace ZealandRoomBooking.Model
         public LokaleBookinger()
         {
             LBId = 1;
-            LBId++;
+            //LBId++;
         }
     }
 }

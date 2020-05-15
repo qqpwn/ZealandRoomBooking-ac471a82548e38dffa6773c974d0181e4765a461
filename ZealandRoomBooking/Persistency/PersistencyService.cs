@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using ZealandRoomBooking.Model;
 
 namespace ZealandRoomBooking.Persistency
 {
@@ -92,7 +93,7 @@ namespace ZealandRoomBooking.Persistency
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var postobject = await client.PostAsJsonAsync($"api/{objstring}", obj);
+                var postobj = await client.PostAsJsonAsync($"api/{objstring}", obj);
             }
         }
 

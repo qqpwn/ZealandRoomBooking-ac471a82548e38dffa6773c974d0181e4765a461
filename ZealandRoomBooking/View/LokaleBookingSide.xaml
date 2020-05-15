@@ -18,7 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -60,14 +60,12 @@
             </StackPanel>
         </Button>
 
-        <Viewbox Grid.Column="0" Grid.Row="2">
+        <ListView Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="3" Margin="35,0,0,0" ItemsSource="{Binding ListOfRooms, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        </Viewbox>
+        <ListView Grid.Column="2" Grid.Row="3" Grid.RowSpan="3" Margin="0,0,35,0"></ListView>
 
-        <TextBlock Text="Lokaler" FontSize="20" FontWeight="Bold" TextAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Margin="35,0,0,70"/>
-        <ListView ItemsSource="{Binding ListOfRooms, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="35,60,0,0"/>
-        <TextBlock Text="Ledighed" Grid.Column="2" Grid.Row="2" Margin="0,0,35,70" TextAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"/>
-        <ListView Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" Margin="0,60,35,0"/>
+        <TextBlock Text="Lokaler" FontSize="20" FontWeight="Bold" TextAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"/>
+        <TextBlock Text="Ledighed" Grid.Column="2" Grid.Row="2" TextAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"/>
 
         <Button Content="Tilbage" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold">
 
@@ -81,9 +79,7 @@
             </interactivity:Interaction.Behaviors>
         </Button>
 
-        <Button Content="Book" Grid.Row="6" Grid.Column="2" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold">
-
-        </Button>
+        <Button Content="Book" Command="{Binding BookRoomCommand}" Grid.Row="6" Grid.Column="2" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold"/>
 
     </Grid>
 </Page>
