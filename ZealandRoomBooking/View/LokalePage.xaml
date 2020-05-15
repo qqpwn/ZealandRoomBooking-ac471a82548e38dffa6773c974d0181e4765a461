@@ -21,7 +21,7 @@
             <RowDefinition Height="100" />
         </Grid.RowDefinitions>
 
-        <Viewbox
+        <!--<Viewbox
             Grid.Row="0"
             Grid.Column="1"
             Width="400"
@@ -161,6 +161,6 @@
             IsEnabled ="{x:Bind Viewmodel. }"
             Margin="0,357,0,0"
             HorizontalAlignment="Center"
-            Width="340" />
+            Width="340" />-->
     </Grid>
 </Page>

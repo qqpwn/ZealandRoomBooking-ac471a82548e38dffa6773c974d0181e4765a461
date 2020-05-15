@@ -6,7 +6,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.Media.Miracast;
+using Eventmaker.Common;
 using ZealandRoomBooking.Annotations;
 using ZealandRoomBooking.Model;
 using ZealandRoomBooking.Persistency;
@@ -16,41 +18,43 @@ namespace ZealandRoomBooking.ViewModel
     public class UserViewModel : INotifyPropertyChanged
     {
         private ObservableCollection<Lokaler> _listOfRooms = new ObservableCollection<Lokaler>();
-
         public ObservableCollection<Lokaler> ListOfRooms
         {
             get { return _listOfRooms; }
         }
+        public ICommand BookRoomCommand { get; set; }
+        public int SelectedRoom { get; set; }
 
         public UserViewModel()
         {
             HentLokaler();
+            BookRoomCommand = new RelayCommand(CreateRoomBooking);
         }
 
         public async void HentLokaler()
         {
-            ObservableCollection<Lokaler> tempCollection = await PersistencyService<Lokaler>.GetObjects("Lokaler");
+            ObservableCollection<Lokaler> tempCollection = await PersistencyService<Lokaler>.GetObjectFromId(1, "Lokaler");
             _listOfRooms = tempCollection;
         }
 
-        public void BookLokale()
+        public void CreateRoomBooking()
         {
-            User user = new User();
+            //Bookinger bookinger = new Bookinger()
+            //{
+            //    BookingId = 1,
+            //    Date = new DateTime(2020, 5, 5),
+            //    UserId = 1
+            //};
 
-            Bookinger bookinger = new Bookinger()
+            //PersistencyService<Bookinger>.PostObject("Bookinger", bookinger);
+
+            LokaleBookinger lokalebooking = new LokaleBookinger()
             {
-                UserId = user.UserId
-            };
-
-            PersistencyService<Bookinger>.PostObject("Bookinger", bookinger);
-
-            LokaleBookinger lokaleBookinger = new LokaleBookinger()
-            {
-                BookingId = bookinger.BookingId,
+                BookingId = 1,
                 LokaleId = 1
             };
 
-            PersistencyService<LokaleBookinger>.PostObject("LokaleBookinger", lokaleBookinger);
+            PersistencyService<LokaleBookinger>.PostObject("LokaleBookinger", lokalebooking);
         }
 
         #region PropertyChangedSupport
