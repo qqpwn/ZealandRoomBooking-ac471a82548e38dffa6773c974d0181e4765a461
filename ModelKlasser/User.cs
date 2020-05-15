@@ -8,9 +8,7 @@ namespace ModelKlasser
     {
         public User()
         {
-            //test
-            //saf
-            //usaer
+            
         }
 
         public int UserId { get; set; }

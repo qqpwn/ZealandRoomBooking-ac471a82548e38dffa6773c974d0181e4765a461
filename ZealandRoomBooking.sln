@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBContext", "DBContext\DBContext.csproj", "{C30BEF4F-113E-4354-8D5F-80A586BB7CF9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WSZealand", "WSZealand\WSZealand.csproj", "{B816FEDC-E002-4F8C-B44D-05E29187C33B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E2B38240-6F9E-45AE-9D08-B60737430C6C} = {E2B38240-6F9E-45AE-9D08-B60737430C6C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

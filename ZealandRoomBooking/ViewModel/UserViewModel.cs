@@ -55,6 +55,7 @@ namespace ZealandRoomBooking.ViewModel
             };
 
             PersistencyService<LokaleBookinger>.PostObject("LokaleBookinger", lokalebooking);
+
         }
 
         #region PropertyChangedSupport
