@@ -74,7 +74,7 @@ namespace DBContext
                 if (!check)
                 {
                     var querystring =
-                        $"INSERT INTO BookingSmartboard VALUES ({bookingSmartboard.BSId},{bookingSmartboard.BookingId},{bookingSmartboard.LokaleId},{bookingSmartboard.TidId})";
+                        $"INSERT INTO BookingSmartboard VALUES ({bookingSmartboard.BookingId},{bookingSmartboard.LokaleId},{bookingSmartboard.TidId})";
                     SqlCommand command = new SqlCommand(querystring, connection);
                     connection.Open();
 
@@ -93,7 +93,7 @@ namespace DBContext
                 var check = GetAllBookingSmartboard().Contains(bookingSmartboard);
                 if (!check)
                 {
-                    var querystring = $"UPDATE BookingSmartboard SET BSId = {bookingSmartboard.BSId}, BookingId = {bookingSmartboard.BookingId}, LokaleId = {bookingSmartboard.LokaleId}, TidId = {bookingSmartboard.TidId} WHERE BSId = {bookingSmartboardId}";
+                    var querystring = $"UPDATE BookingSmartboard SET BookingId = {bookingSmartboard.BookingId}, LokaleId = {bookingSmartboard.LokaleId}, TidId = {bookingSmartboard.TidId} WHERE BSId = {bookingSmartboardId}";
                     SqlCommand command = new SqlCommand(querystring, connection);
                     connection.Open();
 

@@ -71,7 +71,7 @@ namespace DBContext
                 if (!check)
                 {
                     var querystring =
-                        $"INSERT INTO Bookinger VALUES ({bookinger.BookingId},'{bookinger.Date}',{bookinger.UserId})";
+                        $"INSERT INTO Bookinger VALUES ('{bookinger.DateString}',{bookinger.UserId})";
                     SqlCommand command = new SqlCommand(querystring, connection);
                     connection.Open();
 
@@ -90,7 +90,7 @@ namespace DBContext
                 var check = GetAllBookinger().Contains(bookinger);
                 if (!check)
                 {
-                    var querystring = $"UPDATE Bookinger SET BookingId = {bookinger.BookingId}, Date = '{bookinger.Date}', UserId = {bookinger.UserId} WHERE BookingId = {bookingerId}";
+                    var querystring = $"UPDATE Bookinger SET Date = '{bookinger.Date}', UserId = {bookinger.UserId} WHERE BookingId = {bookingerId}";
                     SqlCommand command = new SqlCommand(querystring, connection);
                     connection.Open();
 
