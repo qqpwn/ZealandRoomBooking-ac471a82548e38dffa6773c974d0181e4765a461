@@ -17,9 +17,11 @@ namespace ZealandRoomBooking.ViewModel
 {
     public class UserViewModel : INotifyPropertyChanged
     {
+
         public User refUser { get; set; }
         private static ObservableCollection<Lokaler> _listOfRooms;
         public static ObservableCollection<Lokaler> ListOfRooms
+
         {
             get { return _listOfRooms; }
         }

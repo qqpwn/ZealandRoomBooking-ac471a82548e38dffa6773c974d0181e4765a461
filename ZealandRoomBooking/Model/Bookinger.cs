@@ -25,6 +25,7 @@ namespace ZealandRoomBooking.Model
         public void DateStringMethod()
         {
             DateString = $"{Date.Year}-{Date.Month}-{Date.Day}";
+
         }
     }
 }

@@ -36,6 +36,7 @@ namespace ZealandRoomBooking.Persistency
 
                 try
                 {
+                    HentCollection.Clear();
                     var getobject = await client.GetAsync($"api/{obj}");
                     if (getobject.IsSuccessStatusCode)
                     {
@@ -70,8 +71,12 @@ namespace ZealandRoomBooking.Persistency
                     var getobject = await client.GetAsync($"api/{obj}/{objectId}");
                     if (getobject.IsSuccessStatusCode)
                     {
-                        var hentObject = await getobject.Content.ReadAsAsync<T>();
-                        HentEtObject = hentObject;
+                        HentEtObject.Clear();
+                        var hentObject = await getobject.Content.ReadAsAsync<ObservableCollection<T>>();
+                        foreach (var o in hentObject)
+                        {
+                            HentEtObject.Add(o);
+                        }
                     }
 
                     return HentEtObject;
@@ -83,6 +88,7 @@ namespace ZealandRoomBooking.Persistency
             }
         }
 
+
         public static async Task<T> PostObject(string objstring, T obj)
         {
             using (var client = new HttpClient(MyClientHandler()))
@@ -90,10 +96,9 @@ namespace ZealandRoomBooking.Persistency
                 client.BaseAddress = new Uri(ServerUri);
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
+                
                 var postobj = await client.PostAsJsonAsync($"api/{objstring}", obj);
             }
-
             return obj;
         }
 
