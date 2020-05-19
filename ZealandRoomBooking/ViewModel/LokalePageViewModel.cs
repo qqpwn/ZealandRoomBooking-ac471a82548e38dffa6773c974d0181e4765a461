@@ -11,11 +11,11 @@ namespace ZealandRoomBooking.ViewModel
 {
     public class BookingerViewModel
     {
-        //public int BookingId { get; set; }
+        public int BookingId { get; set; }
 
-        //public DateTime Date { get; set; }
+        public DateTime Date { get; set; }
 
-        //public int UserId { get; set; }
+        public int UserId { get; set; }
 
 
         //public void DeleteBooking()

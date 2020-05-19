@@ -17,6 +17,8 @@ namespace ZealandRoomBooking.ViewModel
 {
     public class UserViewModel : INotifyPropertyChanged
     {
+        public int LokaleId { get; set; }
+
         private ObservableCollection<Lokaler> _listOfRooms = new ObservableCollection<Lokaler>();
         public ObservableCollection<Lokaler> ListOfRooms
         {
@@ -47,14 +49,10 @@ namespace ZealandRoomBooking.ViewModel
             //};
 
             //PersistencyService<Bookinger>.PostObject("Bookinger", bookinger);
+            
+            //Bookinger test = new Bookinger(12,new DateTime(2020,05,22, 00,00,00).ToString("d"), 2);
 
-            LokaleBookinger lokalebooking = new LokaleBookinger()
-            {
-                BookingId = 1,
-                LokaleId = 1
-            };
-
-            PersistencyService<LokaleBookinger>.PostObject("LokaleBookinger", lokalebooking);
+            //PersistencyService<Bookinger>.PostObject(test, "Bookinger");
 
         }
 

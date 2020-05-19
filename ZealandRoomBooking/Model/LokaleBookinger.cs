@@ -12,10 +12,11 @@ namespace ZealandRoomBooking.Model
         public int BookingId { get; set; }
         public int LokaleId { get; set; }
 
-        public LokaleBookinger()
+        public LokaleBookinger(int lbid, int bookingId, int lokaleId)
         {
-            LBId = 1;
-            //LBId++;
+            LBId = lbid;
+            BookingId = bookingId;
+            LokaleId = lokaleId;
         }
     }
 }

@@ -12,11 +12,12 @@ namespace ZealandRoomBooking.Model
         public DateTime Date { get; set; }
         public int UserId { get; set; }
 
-        public Bookinger()
+
+        public Bookinger(int bookingId, DateTime date, int userid)
         {
-            //BookingId = 1;
-            //BookingId++;
-            //Date = DateTime.Now;
+            BookingId = bookingId;
+            Date = date;
+            UserId = userid;
         }
     }
 }
