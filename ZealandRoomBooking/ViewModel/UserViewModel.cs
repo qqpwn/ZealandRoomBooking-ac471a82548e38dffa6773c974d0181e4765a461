@@ -17,10 +17,11 @@ namespace ZealandRoomBooking.ViewModel
 {
     public class UserViewModel : INotifyPropertyChanged
     {
-        public int LokaleId { get; set; }
 
-        private ObservableCollection<Lokaler> _listOfRooms = new ObservableCollection<Lokaler>();
-        public ObservableCollection<Lokaler> ListOfRooms
+        public User refUser { get; set; }
+        private static ObservableCollection<Lokaler> _listOfRooms;
+        public static ObservableCollection<Lokaler> ListOfRooms
+
         {
             get { return _listOfRooms; }
         }
@@ -35,24 +36,25 @@ namespace ZealandRoomBooking.ViewModel
 
         public async void HentLokaler()
         {
-            ObservableCollection<Lokaler> tempCollection = await PersistencyService<Lokaler>.GetObjectFromId(1, "Lokaler");
+            ObservableCollection<Lokaler> tempCollection = await PersistencyService<Lokaler>.GetObjects("Lokaler");
             _listOfRooms = tempCollection;
         }
 
-        public void CreateRoomBooking()
+        public async void CreateRoomBooking()
         {
-            //Bookinger bookinger = new Bookinger()
-            //{
-            //    BookingId = 1,
-            //    Date = new DateTime(2020, 5, 5),
-            //    UserId = 1
-            //};
+            refUser = new User();
+            Bookinger booking = new Bookinger(new DateTime(2020, 7, 5), refUser.CheckedUser.UserId);
 
-            //PersistencyService<Bookinger>.PostObject("Bookinger", bookinger);
-            
-            //Bookinger test = new Bookinger(12,new DateTime(2020,05,22, 00,00,00).ToString("d"), 2);
+            await PersistencyService<Bookinger>.PostObject("Bookinger", booking);
 
-            //PersistencyService<Bookinger>.PostObject(test, "Bookinger");
+            var getBooking = await PersistencyService<Bookinger>.GetObjects("Bookinger");
+            int getId = getBooking.Last().BookingId;
+            int BStatus = 1;
+            LokaleBookinger lokalebooking = new LokaleBookinger(getId, ListOfRooms[SelectedRoom].LokaleId);
+            Lokaler tempLokale = new Lokaler(ListOfRooms[SelectedRoom].Etage, $"{ListOfRooms[SelectedRoom].Type}", $"{ListOfRooms[SelectedRoom].Navn}", $"{ListOfRooms[SelectedRoom].Bygning}", BStatus);
+            PersistencyService<Lokaler>.PutObject(ListOfRooms[SelectedRoom].LokaleId, "Lokaler", tempLokale);
+
+            await PersistencyService<LokaleBookinger>.PostObject("LokaleBookinger", lokalebooking);
 
         }
 

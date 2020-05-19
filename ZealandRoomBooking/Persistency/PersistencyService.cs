@@ -13,7 +13,7 @@ namespace ZealandRoomBooking.Persistency
     public class PersistencyService<T> where T: class
     {
         public static ObservableCollection<T> HentCollection = new ObservableCollection<T>();
-        public static ObservableCollection<T> HentEtObject = new ObservableCollection<T>();
+        public static T HentEtObject;
         private const string ServerUri = "http://localhost:55911/";
 
         public static HttpClientHandler MyClientHandler()
@@ -40,6 +40,7 @@ namespace ZealandRoomBooking.Persistency
                     var getobject = await client.GetAsync($"api/{obj}");
                     if (getobject.IsSuccessStatusCode)
                     {
+                        HentCollection.Clear();
                         ObservableCollection<T> hentObject = await getobject.Content.ReadAsAsync<ObservableCollection<T>>();
                         foreach (var o in hentObject)
                         {
@@ -56,7 +57,7 @@ namespace ZealandRoomBooking.Persistency
             }
         }
 
-        public static async Task<ObservableCollection<T>> GetObjectFromId(int objectId, string obj)
+        public static async Task<T> GetObjectFromId(int objectId, string obj)
         {
             using (var client = new HttpClient(MyClientHandler()))
             {
@@ -87,7 +88,8 @@ namespace ZealandRoomBooking.Persistency
             }
         }
 
-        public static async Task<T> PostObject(T obj, string objstring)
+
+        public static async Task<T> PostObject(string objstring, T obj)
         {
             using (var client = new HttpClient(MyClientHandler()))
             {

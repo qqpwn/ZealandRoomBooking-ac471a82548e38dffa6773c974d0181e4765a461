@@ -71,7 +71,7 @@ namespace DBContext
                 if (!check)
                 {
                     var querystring =
-                        $"INSERT INTO Tid VALUES ({tid.TidId},'{tid.TidFra}','{tid.TidTil}')";
+                        $"INSERT INTO Tid VALUES ('{tid.TidFra}','{tid.TidTil}')";
                     SqlCommand command = new SqlCommand(querystring, connection);
                     connection.Open();
 
@@ -90,7 +90,7 @@ namespace DBContext
                 var check = GetAllTid().Contains(tid);
                 if (!check)
                 {
-                    var querystring = $"UPDATE Tid SET TidId = {tid.TidId}, TidFra = '{tid.TidFra}', TidTil = '{tid.TidTil}' WHERE TidId = {tidId}";
+                    var querystring = $"UPDATE Tid SET TidFra = '{tid.TidFra}', TidTil = '{tid.TidTil}' WHERE TidId = {tidId}";
                     SqlCommand command = new SqlCommand(querystring, connection);
                     connection.Open();
 

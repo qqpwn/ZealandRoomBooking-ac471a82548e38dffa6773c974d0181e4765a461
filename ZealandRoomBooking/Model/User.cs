@@ -20,7 +20,7 @@ namespace ZealandRoomBooking.Model
         public int UserId { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public string UserType { get; set; }
+        public string Usertype { get; set; }
         public User CheckedUser
         {
             get { return CheckedUserInfo;}
@@ -55,13 +55,13 @@ namespace ZealandRoomBooking.Model
             }
 
 
-            if (_alleUsers.Find(_userPredicate) != null && CheckedUserInfo.UserType == SearchElev)
+            if (_alleUsers.Find(_userPredicate) != null && CheckedUserInfo.Usertype == SearchElev)
             {
                 LoginInt = 1;
                 ((Frame)Window.Current.Content).Navigate(typeof(View.Home));
                 
             }
-            else if (_alleUsers.Find(_userPredicate) != null && CheckedUserInfo.UserType == SearchLære)
+            else if (_alleUsers.Find(_userPredicate) != null && CheckedUserInfo.Usertype == SearchLære)
             {
                 LoginInt = 2;
                 ((Frame)Window.Current.Content).Navigate(typeof(View.Home));
