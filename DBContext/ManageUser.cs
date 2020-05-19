@@ -10,7 +10,7 @@ namespace DBContext
 {
     public class ManageUser : IManageUser
     {
-        public const string DBaddress = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog = ZealandDB; Integrated Security = True; Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        public const string DBaddress = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ZealandRoomBookingDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public List<User> UserList = new List<User>();
 
         public List<User> GetAllUser()
@@ -73,7 +73,7 @@ namespace DBContext
                 if (!check)
                 {
                     var querystring =
-                        $"INSERT INTO [User] VALUES ({user.UserId},'{user.Username}','{user.Password}','{user.UserType}')";
+                        $"INSERT INTO [User] VALUES ('{user.Username}','{user.Password}','{user.UserType}')";
                     SqlCommand command = new SqlCommand(querystring, connection);
                     connection.Open();
 
@@ -92,7 +92,7 @@ namespace DBContext
                 var check = GetAllUser().Contains(user);
                 if (!check)
                 {
-                    var querystring = $"UPDATE [User] SET UserId = {user.UserId}, Username = '{user.Username}', Password = '{user.Password}', UserType = '{user.UserType}' WHERE UserId = {userId}";
+                    var querystring = $"UPDATE [User] SET Username = '{user.Username}', Password = '{user.Password}', UserType = '{user.UserType}' WHERE UserId = {userId}";
                     SqlCommand command = new SqlCommand(querystring, connection);
                     connection.Open();
 

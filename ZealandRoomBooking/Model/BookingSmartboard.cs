@@ -15,8 +15,6 @@ namespace ZealandRoomBooking.Model
 
         public BookingSmartboard()
         {
-            BSId = 1;
-            BSId++;
         }
     }
 }

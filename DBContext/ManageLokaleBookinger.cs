@@ -72,7 +72,7 @@ namespace DBContext
                 if (!check)
                 {
                     var querystring =
-                        $"INSERT INTO LokaleBookinger VALUES ({lokaleBookinger.LBId},{lokaleBookinger.BookingId},{lokaleBookinger.LokaleId})";
+                        $"INSERT INTO LokaleBookinger VALUES ({lokaleBookinger.BookingId},{lokaleBookinger.LokaleId})";
                     SqlCommand command = new SqlCommand(querystring, connection);
                     connection.Open();
 
@@ -91,7 +91,7 @@ namespace DBContext
                 var check = GetAllLokaleBookinger().Contains(lokaleBookinger);
                 if (!check)
                 {
-                    var querystring = $"UPDATE LokaleBookinger SET LBId = {lokaleBookinger.LBId}, BookingId = {lokaleBookinger.BookingId}, LokaleId = {lokaleBookinger.LokaleId} WHERE LBId = {lokaleBookingerId}";
+                    var querystring = $"UPDATE LokaleBookinger SET BookingId = {lokaleBookinger.BookingId}, LokaleId = {lokaleBookinger.LokaleId} WHERE LBId = {lokaleBookingerId}";
                     SqlCommand command = new SqlCommand(querystring, connection);
                     connection.Open();
 

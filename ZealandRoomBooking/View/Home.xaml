@@ -5,6 +5,8 @@
     xmlns:local="using:ZealandRoomBooking.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -40,7 +42,13 @@
             BorderBrush="#FF060404"
             Content="Book Lokale"
             FontSize="28"
-            FontWeight="Bold" />
+            FontWeight="Bold" >
+            <interactivity:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Click">
+                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.LokaleBookingSide"></core:NavigateToPageAction>
+                </core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
+        </Button>
         <Button
             Grid.Row="3"
             Grid.RowSpan="2"
@@ -52,7 +60,13 @@
             BorderBrush="#FF060404"
             Content="Mine Bookinger"
             FontSize="28"
-            FontWeight="Bold" />
+            FontWeight="Bold">
+            <interactivity:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Click">
+                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.MyBookingPage"></core:NavigateToPageAction>
+                </core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
+        </Button>
 
     </Grid>
 </Page>

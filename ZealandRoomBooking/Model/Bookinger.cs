@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZealandRoomBooking.Persistency;
 
 namespace ZealandRoomBooking.Model
 {
@@ -11,12 +13,18 @@ namespace ZealandRoomBooking.Model
         public int BookingId { get; set; }
         public DateTime Date { get; set; }
         public int UserId { get; set; }
+        public string DateString { get; set; }
 
-        public Bookinger()
+        public Bookinger(DateTime date, int userId)
         {
-            //BookingId = 1;
-            //BookingId++;
-            //Date = DateTime.Now;
+            Date = date;
+            UserId = userId;
+            DateStringMethod();
+        }
+
+        public void DateStringMethod()
+        {
+            DateString = $"{Date.Year}-{Date.Month}-{Date.Day}";
         }
     }
 }
