@@ -13,15 +13,19 @@ namespace ZealandRoomBooking.Model
         public string Type { get; set; }
         public string Navn { get; set; }
         public string Bygning { get; set; }
-        public int BookingStatus { get; set; }
+        public int BookingStatus { get; set; } = 0;
 
-        public Lokaler(int etage, string type, string navn, string bygning, int bookingStatus)
+        public Lokaler(int etage, string type, string navn, string bygning)
         {
             Etage = etage;
             Type = type;
             Navn = navn;
             Bygning = bygning;
-            BookingStatus = bookingStatus;
+        }
+
+        public Lokaler()
+        {
+            
         }
 
         public override string ToString()

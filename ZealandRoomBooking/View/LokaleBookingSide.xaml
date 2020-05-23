@@ -30,12 +30,12 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Dato" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Margin="110,20,110,20" TextAlignment="Center" VerticalAlignment="Center" FontSize="32" FontWeight="Bold"/>
-        <Button Content="LArrow" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="50" Width="70" Margin="40,0,0,0">
+        <TextBlock Text="{Binding DateBarString, Mode=TwoWay}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Margin="110,20,110,20" TextAlignment="Center" VerticalAlignment="Center" FontSize="32" FontWeight="Bold"/>
+        <Button Content="LArrow" Command="{Binding DayBackwardsCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="50" Width="70" Margin="40,0,0,0">
 
         </Button>
 
-        <Button Content="RArrow" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="50" Width="70" Margin="35,0,0,0">
+        <Button Content="RArrow" Command="{Binding DayForwardCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="50" Width="70" Margin="35,0,0,0">
 
         </Button>
 
@@ -60,7 +60,8 @@
             </StackPanel>
         </Button>
 
-        <ListView Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="3" Margin="35,0,0,0" ItemsSource="{Binding ListOfRooms, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <ListView x:Name="RoomList" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="3" Margin="35,0,0,0" ItemsSource="{Binding ListOfRooms, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        </ListView>
 
         <ListView Grid.Column="2" Grid.Row="3" Grid.RowSpan="3" Margin="0,0,35,0"></ListView>
 
@@ -68,7 +69,11 @@
         <TextBlock Text="Ledighed" Grid.Column="2" Grid.Row="2" TextAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"/>
 
         <Button Content="Tilbage" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold">
-
+            <interactivity:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Click">
+                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.Home"></core:NavigateToPageAction>
+                </core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
         </Button>
 
         <Button Content="Home" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold">
@@ -79,7 +84,13 @@
             </interactivity:Interaction.Behaviors>
         </Button>
 
-        <Button Content="Book" Command="{Binding BookRoomCommand}" Grid.Row="6" Grid.Column="2" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold"/>
+        <Button Content="Book" Command="{Binding BookRoomCommand}" Grid.Row="6" Grid.Column="2" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold">
+            <interactivity:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Click">
+                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.Home"></core:NavigateToPageAction>
+                </core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
+        </Button>
 
     </Grid>
 </Page>
