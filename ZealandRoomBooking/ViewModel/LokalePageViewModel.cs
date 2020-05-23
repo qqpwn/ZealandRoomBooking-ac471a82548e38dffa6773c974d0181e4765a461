@@ -27,7 +27,7 @@ namespace ZealandRoomBooking.ViewModel
         //        UserId = user.UserId
         //    };
 
-        //    Persistency.PersistencyService<Bookinger>.DeleteObject(objectId:,objstring:);
+        //    Persistency.PersistencyService<Bookinger>.DeleteObject(objectId:, objstring:);
 
         //    LokaleBookinger lokaleBookinger = new LokaleBookinger()
         //    {
@@ -35,7 +35,7 @@ namespace ZealandRoomBooking.ViewModel
         //        LokaleId = 1
         //    };
 
-        //    Persistency.PersistencyService<LokaleBookinger>.DeleteObject(bookinger.BookingId,lokaleBookinger.LokaleId);
+        //    Persistency.PersistencyService<LokaleBookinger>.DeleteObject(bookinger.BookingId, lokaleBookinger.LokaleId);
         //}
 
 
@@ -46,7 +46,7 @@ namespace ZealandRoomBooking.ViewModel
         //public ICommand DeleteBookingCommand
         //{
         //    get { return _deleteBookingCommand ?? (_deleteBookingCommand = new RelayCommand(Persistency.PersistencyService<Bookinger>.DeleteObject())); }
-            
+
         //    set { _deleteBookingCommand = value; }
         //}
 

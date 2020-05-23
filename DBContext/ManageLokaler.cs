@@ -11,7 +11,7 @@ namespace DBContext
     public class ManageLokaler : IManageLokaler
     {
 
-        public const string DBaddress = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ZealandRoomBookingDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        public const string DBaddress = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ZealandDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public List<Lokaler> LokaleList = new List<Lokaler>();
 
         public List<Lokaler> GetAllLokaler()
@@ -30,10 +30,10 @@ namespace DBContext
                     string type = reader.GetString(2);
                     string navn = reader.GetString(3);
                     string bygning = reader.GetString(4);
-                    int bookingStatus = reader.GetInt32(5);
+                    
 
 
-                    Lokaler addLokale = new Lokaler() {LokaleId = id, Etage = etage, Type = type, Navn = navn, Bygning = bygning, BookingStatus = bookingStatus};
+                    Lokaler addLokale = new Lokaler() {LokaleId = id, Etage = etage, Type = type, Navn = navn, Bygning = bygning};
                     LokaleList.Add(addLokale);
                 }
                 connection.Close();
@@ -58,14 +58,14 @@ namespace DBContext
                     string type = reader.GetString(2);
                     string navn = reader.GetString(3);
                     string bygning = reader.GetString(4);
-                    int bookingStatus = reader.GetInt32(5);
+                    
 
                     nyLokale.LokaleId = id;
                     nyLokale.Etage = etage;
                     nyLokale.Type = type;
                     nyLokale.Navn = navn;
                     nyLokale.Bygning = bygning;
-                    nyLokale.BookingStatus = bookingStatus;
+                    
                 }
                 connection.Close();
                 return nyLokale;
@@ -80,7 +80,7 @@ namespace DBContext
                 if (!check)
                 {
                     var querystring =
-                        $"INSERT INTO Lokaler VALUES ({lokaler.Etage},'{lokaler.Type}','{lokaler.Navn}','{lokaler.Bygning}',{lokaler.BookingStatus})";
+                        $"INSERT INTO Lokaler VALUES ({lokaler.Etage},'{lokaler.Type}','{lokaler.Navn}','{lokaler.Bygning}')";
                     SqlCommand command = new SqlCommand(querystring, connection);
                     connection.Open();
 
@@ -99,7 +99,7 @@ namespace DBContext
                 var check = GetAllLokaler().Contains(lokaler);
                 if (!check)
                 {
-                    var querystring = $"UPDATE Lokaler SET Etage = {lokaler.Etage}, Type = '{lokaler.Type}', Navn = '{lokaler.Navn}', Bygning = '{lokaler.Bygning}', BookingStatus = {lokaler.BookingStatus} WHERE LokaleId = {lokalerId}";
+                    var querystring = $"UPDATE Lokaler SET Etage = {lokaler.Etage}, Type = '{lokaler.Type}', Navn = '{lokaler.Navn}', Bygning = '{lokaler.Bygning}' WHERE LokaleId = {lokalerId}";
                     SqlCommand command = new SqlCommand(querystring, connection);
                     connection.Open();
 

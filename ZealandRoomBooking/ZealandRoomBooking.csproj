@@ -127,6 +127,7 @@
     <Compile Include="Model\BookingSmartboard.cs" />
     <Compile Include="Model\LokaleBookinger.cs" />
     <Compile Include="Model\Lokaler.cs" />
+    <Compile Include="Model\SimpletonLokaler.cs" />
     <Compile Include="Model\Tid.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Persistency\PersistencyService.cs" />

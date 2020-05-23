@@ -14,6 +14,6 @@ namespace ModelKlasser
         public DateTime Date { get; set; }
         public int UserId { get; set; }
         public string DateString { get; set; }
-
+        
     }
 }

@@ -17,5 +17,10 @@ namespace ZealandRoomBooking.Model
             BookingId = bookingId;
             LokaleId = lokaleId;
         }
+
+        public LokaleBookinger()
+        {
+            
+        }
     }
 }

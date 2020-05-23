@@ -22,6 +22,10 @@ namespace ZealandRoomBooking.Model
             DateStringMethod();
         }
 
+        public Bookinger()
+        {
+            
+        }
         public void DateStringMethod()
         {
             DateString = $"{Date.Year}-{Date.Month}-{Date.Day}";
