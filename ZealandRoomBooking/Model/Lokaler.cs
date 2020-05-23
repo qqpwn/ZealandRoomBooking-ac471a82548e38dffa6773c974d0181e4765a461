@@ -25,12 +25,14 @@ namespace ZealandRoomBooking.Model
         public string Type { get; set; }
         public string Navn { get; set; }
         public string Bygning { get; set; }
+
         public int BookingStatus { get { return _bookingStatus; } set { _bookingStatus = value; OnPropertyChanged(); } }
         public SolidColorBrush Color
         {
             get { return Test(); }
             set { _color = value; OnPropertyChanged(); }
         }
+
 
         public Lokaler(int etage, string type, string navn, string bygning)
         {
