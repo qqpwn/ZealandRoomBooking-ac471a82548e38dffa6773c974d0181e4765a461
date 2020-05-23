@@ -10,7 +10,9 @@ namespace DBContext
 {
    public class ManageLokaleBookinger : IManageLokaleBookinger
    {
+
        public const string DBaddress = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ZealandRoomBookingDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+
         public List<LokaleBookinger> LokaleBookingerList = new List<LokaleBookinger>();
 
         public List<LokaleBookinger> GetAllLokaleBookinger()
@@ -71,7 +73,8 @@ namespace DBContext
                 if (!check)
                 {
                     var querystring =
-                        $"INSERT INTO LokaleBookinger VALUES ({lokaleBookinger.BookingId},{lokaleBookinger.LokaleId})";
+                    $"INSERT INTO LokaleBookinger VALUES ({lokaleBookinger.BookingId},{lokaleBookinger.LokaleId})";
+
                     SqlCommand command = new SqlCommand(querystring, connection);
                     connection.Open();
 

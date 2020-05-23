@@ -19,13 +19,14 @@ namespace ZealandRoomBooking.ViewModel
 {
     public class UserViewModel : INotifyPropertyChanged
     {
-        #region Properties
         private static ObservableCollection<Lokaler> _listOfRooms = new ObservableCollection<Lokaler>();
         private static ObservableCollection<Bookinger> _listOfBookinger = new ObservableCollection<Bookinger>();
         private static ObservableCollection<LokaleBookinger> _listOfLokaleBookinger = new ObservableCollection<LokaleBookinger>();
         private string _dateBarString;
 
+
         public static ObservableCollection<Lokaler> ListOfRooms
+
         {
             get { return _listOfRooms; }
         }
