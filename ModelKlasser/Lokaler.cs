@@ -16,7 +16,7 @@ namespace ModelKlasser
         public string Type { get; set; }
         public string Navn { get; set; }
         public string Bygning { get; set; }
-        public int BookingStatus { get; set; }
+        
 
         public override string ToString()
         {

@@ -8,7 +8,7 @@
     xmlns:viewModel="using:ZealandRoomBooking.ViewModel"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    mc:Ignorable="d"
+   mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.DataContext>
         <viewModel:UserViewModel/>
@@ -60,7 +60,20 @@
             </StackPanel>
         </Button>
 
-        <ListView x:Name="RoomList" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="3" Margin="35,0,0,0" ItemsSource="{Binding ListOfRooms, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <ListView Name="ListViewBookingSide" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="3" Margin="35,0,0,0" ItemsSource="{Binding ListOfRooms, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ListViewItem Background="{Binding Color}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Navn}"></TextBlock>
+                            <TextBlock Text="{Binding Etage}"></TextBlock>
+                            <TextBlock Text="{Binding Bygning}"></TextBlock>
+                            <TextBlock Text="{Binding Type}"></TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
         </ListView>
 
         <ListView Grid.Column="2" Grid.Row="3" Grid.RowSpan="3" Margin="0,0,35,0"></ListView>

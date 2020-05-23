@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.Store.Preview.InstallControl;
 using Windows.Media.Miracast;
+using Windows.UI;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Eventmaker.Common;
 using ZealandRoomBooking.Annotations;
 using ZealandRoomBooking.Model;
@@ -19,6 +22,16 @@ namespace ZealandRoomBooking.ViewModel
 {
     public class UserViewModel : INotifyPropertyChanged
     {
+
+        public int LokaleId { get; set; }
+        public int Etage { get; set; }
+        public string Type { get; set; }
+        public string Navn { get; set; }
+        public string Bygning { get; set; }
+        
+
+        public Lokaler RefLokaler = new Lokaler();
+
         private static ObservableCollection<Lokaler> _listOfRooms = new ObservableCollection<Lokaler>();
         private static ObservableCollection<Bookinger> _listOfBookinger = new ObservableCollection<Bookinger>();
         private static ObservableCollection<LokaleBookinger> _listOfLokaleBookinger = new ObservableCollection<LokaleBookinger>();
@@ -63,6 +76,9 @@ namespace ZealandRoomBooking.ViewModel
         #region Constructor
         public UserViewModel()
         {
+            HentLokaler();
+            RefLokaler = new Lokaler();
+            RefLokaler.HentFraPersistency();
             HentAlleCollections();
             DateToString();
             BookRoomCommand = new RelayCommand(BookRoom);
@@ -104,12 +120,8 @@ namespace ZealandRoomBooking.ViewModel
 
         public async void HentAlleCollections()
         {
-            ObservableCollection<Lokaler> tempLCollection =
-                await PersistencyService<Lokaler>.GetObjects("Lokaler");
-            _listOfRooms = tempLCollection;
-
             ObservableCollection<Bookinger> tempBCollection =
-                await PersistencyService<Bookinger>.GetObjects("Bookinger");
+            await PersistencyService<Bookinger>.GetObjects("Bookinger");
             _listOfBookinger = tempBCollection;
 
             ObservableCollection<LokaleBookinger> tempLBCollection = await PersistencyService<LokaleBookinger>.GetObjects("LokaleBookinger");
@@ -119,6 +131,13 @@ namespace ZealandRoomBooking.ViewModel
         }
         #endregion
 
+public SolidColorBrush Color { get { return RefLokaler.Color; } set { RefLokaler.Color = value; OnPropertyChanged(); } }
+
+        
+        public  void HentLokaler()
+        {
+            _listOfRooms = SimpletonLokaler.Instance.MineLokaler;
+        }
         #region SetRoomStatusMethod
         public async void SetRoomStatus()
         {
@@ -149,8 +168,7 @@ namespace ZealandRoomBooking.ViewModel
                                     break;
                                 }
                             }
-
-                            break;
+                           break;
                         }
                     }
                 }
@@ -315,7 +333,10 @@ namespace ZealandRoomBooking.ViewModel
             {
                 CreateRoomBooking();
             }
+
         }
+
+       
 
         public async void CreateRoomBooking()
         {
@@ -325,6 +346,7 @@ namespace ZealandRoomBooking.ViewModel
 
             var getBooking = await PersistencyService<Bookinger>.GetObjects("Bookinger");
             int getId = getBooking.Last().BookingId;
+
 
             LokaleBookinger lokalebooking = new LokaleBookinger(getId, selectedRoom.LokaleId);
             Lokaler tempLokale = new Lokaler(selectedRoom.Etage, $"{selectedRoom.Type}", $"{selectedRoom.Navn}", $"{selectedRoom.Bygning}");

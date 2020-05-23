@@ -11,7 +11,7 @@ namespace DBContext
     public class ManageLokaler : IManageLokaler
     {
 
-        public const string DBaddress = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ZealandRoomBookingDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        public const string DBaddress = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ZealandDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public List<Lokaler> LokaleList = new List<Lokaler>();
 
         public List<Lokaler> GetAllLokaler()
@@ -30,6 +30,7 @@ namespace DBContext
                     string type = reader.GetString(2);
                     string navn = reader.GetString(3);
                     string bygning = reader.GetString(4);
+
 
 
                     Lokaler addLokale = new Lokaler() {LokaleId = id, Etage = etage, Type = type, Navn = navn, Bygning = bygning};
@@ -58,11 +59,13 @@ namespace DBContext
                     string navn = reader.GetString(3);
                     string bygning = reader.GetString(4);
 
+
                     nyLokale.LokaleId = id;
                     nyLokale.Etage = etage;
                     nyLokale.Type = type;
                     nyLokale.Navn = navn;
                     nyLokale.Bygning = bygning;
+
                 }
                 connection.Close();
                 return nyLokale;
