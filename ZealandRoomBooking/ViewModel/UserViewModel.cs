@@ -10,6 +10,7 @@ using System.Windows.Input;
 using Windows.ApplicationModel.Store.Preview.InstallControl;
 using Windows.Media.Miracast;
 using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Eventmaker.Common;
@@ -32,7 +33,6 @@ namespace ZealandRoomBooking.ViewModel
         private static ObservableCollection<Bookinger> _listOfBookinger = new ObservableCollection<Bookinger>();
         private static ObservableCollection<LokaleBookinger> _listOfLokaleBookinger = new ObservableCollection<LokaleBookinger>();
         private string _dateBarString;
-
 
         public static ObservableCollection<Lokaler> ListOfRooms { get; private set; } = new ObservableCollection<Lokaler>();
 
@@ -91,6 +91,7 @@ namespace ZealandRoomBooking.ViewModel
                 BookingDate = BookingDate.AddDays(1);
                 DaysAdded++;
                 SetRoomStatus();
+                ((Frame)Window.Current.Content).Navigate(typeof(View.LokaleBookingSide));
             }
             DateToString();
         }
@@ -102,6 +103,7 @@ namespace ZealandRoomBooking.ViewModel
                 BookingDate = BookingDate.AddDays(-1);
                 DaysAdded--;
                 SetRoomStatus();
+                ((Frame)Window.Current.Content).Navigate(typeof(View.LokaleBookingSide));
             }
             DateToString();
         }
