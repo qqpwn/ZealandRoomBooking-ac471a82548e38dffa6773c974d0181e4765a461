@@ -28,21 +28,14 @@ namespace ZealandRoomBooking.ViewModel
         public string Type { get; set; }
         public string Navn { get; set; }
         public string Bygning { get; set; }
-        
 
-        
 
-        private static ObservableCollection<Lokaler> _listOfRooms = new ObservableCollection<Lokaler>();
         private static ObservableCollection<Bookinger> _listOfBookinger = new ObservableCollection<Bookinger>();
         private static ObservableCollection<LokaleBookinger> _listOfLokaleBookinger = new ObservableCollection<LokaleBookinger>();
         private string _dateBarString;
 
 
-        public static ObservableCollection<Lokaler> ListOfRooms
-
-        {
-            get { return _listOfRooms; }
-        }
+        public static ObservableCollection<Lokaler> ListOfRooms { get; private set; } = new ObservableCollection<Lokaler>();
 
         public static ObservableCollection<Bookinger> ListOfBookinger
         {
@@ -60,7 +53,7 @@ namespace ZealandRoomBooking.ViewModel
         public int SelectedRoom { get; set; }
         public ICommand DayForwardCommand { get; set; }
         public ICommand DayBackwardsCommand { get; set; }
-        public DateTime BookingDate { get; set; } = DateTime.Now;
+        public static DateTime BookingDate { get; set; } = DateTime.Now;
         public int DaysAdded { get; set; } = 0;
 
         #region DateBarString
@@ -84,6 +77,9 @@ namespace ZealandRoomBooking.ViewModel
             BookRoomCommand = new RelayCommand(BookRoom);
             DayForwardCommand = new RelayCommand(DayForward);
             DayBackwardsCommand = new RelayCommand(DayBackwards);
+            RefLokaler = new Lokaler();
+            RefLokaler.AddtilList();
+            
 
         }
         #endregion
@@ -119,54 +115,58 @@ namespace ZealandRoomBooking.ViewModel
 
         #region GetCollectionsMethod
 
-        public static async void HentAlleCollections()
+        public async void HentAlleCollections()
         {
             ObservableCollection<Bookinger> tempBCollection = await PersistencyService<Bookinger>.GetObjects("Bookinger");
             _listOfBookinger = tempBCollection;
 
             ObservableCollection<LokaleBookinger> tempLBCollection = await PersistencyService<LokaleBookinger>.GetObjects("LokaleBookinger");
             _listOfLokaleBookinger = tempLBCollection;
-
+            SetRoomStatus();
         }
         #endregion
 
-        public static async void HentLokaler()
+        public async void HentLokaler()
         {
             ObservableCollection<Lokaler> tempLCollection = await PersistencyService<Lokaler>.GetObjects("Lokaler");
-            _listOfRooms = tempLCollection;
+            ListOfRooms = tempLCollection;
         }
 
         #region SetRoomStatusMethod
         public async void SetRoomStatus()
         {
-            var userInt = 0;
-            foreach (var booking in ListOfBookinger)
+            if (ListOfBookinger.Count != 0)
             {
-                if (booking.Date.Day == BookingDate.Day && booking.Date.Month == BookingDate.Month && booking.Date.Year == BookingDate.Year)
+                foreach (var booking in ListOfBookinger)
                 {
-                    var tempUser = await PersistencyService<User>.GetObjectFromId(booking.UserId, "User");
-                    if (tempUser.Usertype == "Elev")
+                    if (booking.Date.Day == BookingDate.Day && booking.Date.Month == BookingDate.Month && booking.Date.Year == BookingDate.Year)
                     {
-                        userInt++;
-                    }
-                    else
-                    {
-                        userInt = userInt + 3;
-                    }
-
-                    foreach (var lokaleBooking in ListOfLokaleBookinger)
-                    {
-                        if (lokaleBooking.BookingId == booking.BookingId)
+                        var tempUser = await PersistencyService<User>.GetObjectFromId(booking.UserId, "User");
+                        
+                        foreach (var lokaleBooking in ListOfLokaleBookinger)
                         {
-                            foreach (var room in ListOfRooms)
+                            if (lokaleBooking.BookingId == booking.BookingId)
                             {
-                                if (room.LokaleId == lokaleBooking.LokaleId)
+                                foreach (var room in ListOfRooms)
                                 {
-                                    room.BookingStatus = userInt;
-                                    break;
+                                    if (room.LokaleId == lokaleBooking.LokaleId)
+                                    {
+                                        if (tempUser.Usertype == "Elev")
+                                        {
+                                            room.BookingStatus++;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            room.BookingStatus = room.BookingStatus + 3;
+                                            break;
+                                        }
+                                        
+                                    }
                                 }
+
+                                break;
                             }
-                            break;
                         }
                     }
                 }
