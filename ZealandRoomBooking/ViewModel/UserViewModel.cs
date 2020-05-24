@@ -29,15 +29,13 @@ namespace ZealandRoomBooking.ViewModel
         public string Navn { get; set; }
         public string Bygning { get; set; }
 
-        private static ObservableCollection<Lokaler> _listOfRooms = new ObservableCollection<Lokaler>();
         private static ObservableCollection<Bookinger> _listOfBookinger = new ObservableCollection<Bookinger>();
         private static ObservableCollection<LokaleBookinger> _listOfLokaleBookinger = new ObservableCollection<LokaleBookinger>();
         private string _dateBarString;
 
-        public static ObservableCollection<Lokaler> ListOfRooms
-        {
-            get { return _listOfRooms; }
-        }
+
+        public static ObservableCollection<Lokaler> ListOfRooms { get; private set; } = new ObservableCollection<Lokaler>();
+
 
         public static ObservableCollection<Bookinger> ListOfBookinger
         {
@@ -55,7 +53,7 @@ namespace ZealandRoomBooking.ViewModel
         public ICommand BookRoomCommand { get; set; }
         public ICommand DayForwardCommand { get; set; }
         public ICommand DayBackwardsCommand { get; set; }
-        public DateTime BookingDate { get; set; } = DateTime.Now;
+        public static DateTime BookingDate { get; set; } = DateTime.Now;
         public int DaysAdded { get; set; } = 0;
         #endregion
 
@@ -80,6 +78,8 @@ namespace ZealandRoomBooking.ViewModel
             BookRoomCommand = new RelayCommand(BookRoom);
             DayForwardCommand = new RelayCommand(DayForward);
             DayBackwardsCommand = new RelayCommand(DayBackwards);
+            RefLokaler = new Lokaler();
+            RefLokaler.AddtilList();
         }
         #endregion
 
@@ -114,6 +114,7 @@ namespace ZealandRoomBooking.ViewModel
 
         #region GetCollectionsMethod
 
+
         public async void HentAlleBookinger()
         {
             ObservableCollection<Bookinger> tempBCollection = await PersistencyService<Bookinger>.GetObjects("Bookinger");
@@ -128,7 +129,7 @@ namespace ZealandRoomBooking.ViewModel
         public async void HentLokaler()
         {
             ObservableCollection<Lokaler> tempLCollection = await PersistencyService<Lokaler>.GetObjects("Lokaler");
-            _listOfRooms = tempLCollection;
+            ListOfRooms = tempLCollection;
         }
         #endregion
 
@@ -146,25 +147,28 @@ namespace ZealandRoomBooking.ViewModel
                     var tempUser = await PersistencyService<User>.GetObjectFromId(booking.UserId, "User");
                     foreach (var lokaleBooking in ListOfLokaleBookinger)
                     {
-                        if (lokaleBooking.BookingId == booking.BookingId)
-                        {
-                            foreach (var room in ListOfRooms)
+                            if (lokaleBooking.BookingId == booking.BookingId)
                             {
-                                if (room.LokaleId == lokaleBooking.LokaleId)
+                                foreach (var room in ListOfRooms)
                                 {
-                                    if (tempUser.Usertype == "Elev")
+                                    if (room.LokaleId == lokaleBooking.LokaleId)
                                     {
-                                        room.BookingStatus++;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        room.BookingStatus = room.BookingStatus + 3;
-                                        break;
+                                        if (tempUser.Usertype == "Elev")
+                                        {
+                                            room.BookingStatus++;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            room.BookingStatus = room.BookingStatus + 3;
+                                            break;
+                                        }
+
                                     }
                                 }
+
+                                break;
                             }
-                            break;
                         }
                     }
                 }
