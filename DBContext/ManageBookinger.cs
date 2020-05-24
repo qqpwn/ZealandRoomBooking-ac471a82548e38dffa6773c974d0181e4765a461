@@ -10,7 +10,9 @@ namespace DBContext
 {
     public class ManageBookinger : IManageBookinger
     {
+
         public const string DBaddress = "Server=tcp:zealandroombookingdb.database.windows.net,1433;Initial Catalog=ZealandRoomBooking;Persist Security Info=False;User ID=Maxi123;Password=Maximilian123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
         public List<Bookinger> BookingList = new List<Bookinger>();
 
         public List<Bookinger> GetAllBookinger()

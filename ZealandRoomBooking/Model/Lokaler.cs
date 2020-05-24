@@ -57,9 +57,11 @@ namespace ZealandRoomBooking.Model
         {
             get { return _alleLokaleBookingers; }
         }
+
         public ObservableCollection<Bookinger> MineBookingers
         {
             get { return _alleBookingers; }
+
         }
         public ObservableCollection<Lokaler> MineLokaler
         {
@@ -95,6 +97,7 @@ namespace ZealandRoomBooking.Model
             RefBookinger = new Bookinger();
             RefLokaleBookinger = new LokaleBookinger();
             RefUser = new User();
+
             foreach (var b in _alleLokaler)
             {
                 if (a.LokaleId == b.LokaleId)
@@ -134,7 +137,6 @@ namespace ZealandRoomBooking.Model
                             _color = a._color;
                             OnPropertyChanged(nameof(_color));
                             return _color;
-
                         }
                         else if (a.Type == "Klasselokale" && b.BookingStatus >= 1 && b.BookingStatus < 3 && DateTime.Today.Date <= DatoDageFrem.AddDays(3))
                         {
@@ -142,7 +144,6 @@ namespace ZealandRoomBooking.Model
                             _color = a._color;
                             OnPropertyChanged(nameof(_color));
                             return _color;
-
                         }
                         else if (a.Type == "Klasselokale" && b.BookingStatus > 2)
                         {
@@ -150,7 +151,6 @@ namespace ZealandRoomBooking.Model
                             _color = a._color;
                             OnPropertyChanged(nameof(_color));
                             return _color;
-
                         }
                         else if (a.Type == "Møderum" && b.BookingStatus > 0 && DateTime.Today.Date < DatoDageFrem.AddDays(3) && DateTime.Today.Date < DatoDageFrem.AddDays(2) && DateTime.Today.Date < DatoDageFrem.AddDays(1))
                         {

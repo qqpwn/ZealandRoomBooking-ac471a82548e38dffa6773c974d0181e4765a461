@@ -22,7 +22,7 @@ namespace ZealandRoomBooking.ViewModel
 {
     public class UserViewModel : INotifyPropertyChanged
     {
-
+        #region Properties
         public int LokaleId { get; set; }
         public int Etage { get; set; }
         public string Type { get; set; }
@@ -36,6 +36,7 @@ namespace ZealandRoomBooking.ViewModel
 
 
         public static ObservableCollection<Lokaler> ListOfRooms { get; private set; } = new ObservableCollection<Lokaler>();
+
 
         public static ObservableCollection<Bookinger> ListOfBookinger
         {
@@ -200,12 +201,10 @@ namespace ZealandRoomBooking.ViewModel
                     }
                     else
                     {
-                        //Work in progress, lærer skal ikke kunne overskrive en anden lærers booking
-                        //og den skal også slette elevens booking
-                        if (BookingDate.Day >= DateTime.Now.AddDays(3).Day && selectedRoom.BookingStatus <= 2)
+                        if (BookingDate.Day >= DateTime.Now.AddDays(3).Day && BookingDate.Month >= DateTime.Now.Month && selectedRoom.BookingStatus <= 2)
                         {
-                            BookingCheckLærer();
                             DeleteElevBooking();
+                            BookingCheckLærer();
                         }
                     }
                 }
@@ -226,12 +225,10 @@ namespace ZealandRoomBooking.ViewModel
                         }
                         else
                         {
-                            //Work in progress, lærer skal ikke kunne overskrive en anden lærers booking
-                            //og den skal også slette elevens booking
-                            if (BookingDate.Day >= DateTime.Now.AddDays(3).Day && selectedRoom.BookingStatus <= 2)
+                            if (BookingDate.Day >= DateTime.Now.AddDays(3).Day && BookingDate.Month >= DateTime.Now.Month && selectedRoom.BookingStatus <= 2)
                             {
-                                BookingCheckLærer();
                                 DeleteElevBooking();
+                                BookingCheckLærer();
                             }
                         }
                     }
@@ -245,41 +242,24 @@ namespace ZealandRoomBooking.ViewModel
             var roomStatus = selectedRoom.BookingStatus;
             foreach (var booking in ListOfBookinger)
             {
-                if (booking.Date.Day == BookingDate.Day && booking.Date.Month == BookingDate.Month && booking.Date.Year == BookingDate.Year)
+                if (roomStatus > 0 && booking.Date.Day == BookingDate.Day && booking.Date.Month == BookingDate.Month && booking.Date.Year == BookingDate.Year)
                 {
-
                     foreach (var lokaleBooking in ListOfLokaleBookinger)
                     {
                         if (lokaleBooking.BookingId == booking.BookingId && lokaleBooking.LokaleId == selectedRoom.LokaleId)
                         {
-                            if (selectedRoom.Type == "Klasselokale")
-                            {
-                                if (roomStatus == 1)
-                                {
-                                    PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
-                                    PersistencyService<Bookinger>.DeleteObject(booking.BookingId, "Bookinger");
-                                    break;
-                                }
-                                else
-                                {
-                                    if (roomStatus == 2)
-                                    {
-                                        PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
-                                        PersistencyService<Bookinger>.DeleteObject(booking.BookingId, "Bookinger");
-                                        roomStatus--;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (selectedRoom.Type == "Møderum")
-                                {
-                                    PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
-                                    PersistencyService<Bookinger>.DeleteObject(booking.BookingId, "Bookinger");
-                                    break;
-                                }
-                            }
+                            PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
+                            PersistencyService<Bookinger>.DeleteObject(booking.BookingId, "Bookinger");
+                            roomStatus--;
+                            break;
                         }
+                    }
+                }
+                else
+                {
+                    if (roomStatus == 0)
+                    {
+                        break;
                     }
                 }
             }
@@ -344,7 +324,6 @@ namespace ZealandRoomBooking.ViewModel
 
             var getBooking = await PersistencyService<Bookinger>.GetObjects("Bookinger");
             int getId = getBooking.Last().BookingId;
-
 
             LokaleBookinger lokalebooking = new LokaleBookinger(getId, selectedRoom.LokaleId);
             Lokaler tempLokale = new Lokaler(selectedRoom.Etage, $"{selectedRoom.Type}", $"{selectedRoom.Navn}", $"{selectedRoom.Bygning}");
