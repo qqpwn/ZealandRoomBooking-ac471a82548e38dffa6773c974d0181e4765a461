@@ -201,7 +201,7 @@ namespace ZealandRoomBooking.ViewModel
                     }
                     else
                     {
-                        if (BookingDate.Day >= DateTime.Now.AddDays(3).Day && selectedRoom.BookingStatus <= 2)
+                        if (BookingDate.Day >= DateTime.Now.AddDays(3).Day && BookingDate.Month >= DateTime.Now.Month && selectedRoom.BookingStatus <= 2)
                         {
                             DeleteElevBooking();
                             BookingCheckLærer();
