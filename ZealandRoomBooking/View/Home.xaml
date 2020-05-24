@@ -63,7 +63,7 @@
             FontWeight="Bold">
             <interactivity:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Click">
-                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.MyBookingPage"></core:NavigateToPageAction>
+                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.MyBookingsPage"></core:NavigateToPageAction>
                 </core:EventTriggerBehavior>
             </interactivity:Interaction.Behaviors>
         </Button>

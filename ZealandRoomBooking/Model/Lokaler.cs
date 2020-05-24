@@ -19,14 +19,13 @@ namespace ZealandRoomBooking.Model
     public class Lokaler : INotifyPropertyChanged
     {
         private SolidColorBrush _color;
-        private static int _bookingStatus = 0;
+        public int BookingStatus { get; set; } = 0;
         public int LokaleId { get; set; }
         public int Etage { get; set; }
         public string Type { get; set; }
         public string Navn { get; set; }
         public string Bygning { get; set; }
 
-        public int BookingStatus { get { return _bookingStatus; } set { _bookingStatus = value; OnPropertyChanged(); } }
         public SolidColorBrush Color
         {
             get
@@ -148,13 +147,13 @@ namespace ZealandRoomBooking.Model
             return _color;
         }
 
-        public static DateTime Dato = new DateTime(2020, 05, 23);
+        public static DateTime Dato = DateTime.Now;
         public LokaleBookinger RefLokaleBookinger { get; set; }
         public static Bookinger RefBookinger { get; set; }
         public User RefUser { get; set; }
         public UserViewModel RefUserViewModel { get; set; }
 
-        public static ObservableCollection<Bookinger> CheckedBookinger = new ObservableCollection<Bookinger>();
+        public static List<Bookinger> CheckedBookinger = new List<Bookinger>();
 
         public List<Bookinger> LedighedsSortCheckBookinger()
         {
@@ -165,7 +164,7 @@ namespace ZealandRoomBooking.Model
                 {
                     foreach (var a in MineBookingers)
                     {
-                        if (a.Date == Dato)
+                        if (a.Date.Date == Dato.Date)
                         {
                             CheckedBookinger.Add(a);
                         }
