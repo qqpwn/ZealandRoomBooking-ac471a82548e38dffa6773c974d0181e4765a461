@@ -14,7 +14,7 @@ namespace ZealandRoomBooking.Persistency
     {
         public static ObservableCollection<T> HentCollection = new ObservableCollection<T>();
         public static T HentEtObject;
-        private const string ServerUri = "http://localhost:55911/";
+        private const string ServerUri = "https://wszealand20200524210951.azurewebsites.net/";
 
         public static HttpClientHandler MyClientHandler()
         {

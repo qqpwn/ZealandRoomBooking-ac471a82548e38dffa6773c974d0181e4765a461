@@ -18,33 +18,29 @@ namespace ZealandRoomBooking.Model
 {
     public class Lokaler : INotifyPropertyChanged
     {
-        private SolidColorBrush _color;
-        private static int _bookingStatus = 0;
+        private SolidColorBrush _color = new SolidColorBrush(Colors.Green);
+        public int BookingStatus { get; set; } = 0;
         public int LokaleId { get; set; }
         public int Etage { get; set; }
         public string Type { get; set; }
         public string Navn { get; set; }
         public string Bygning { get; set; }
 
-        public int BookingStatus { get { return _bookingStatus; } set { _bookingStatus = value; OnPropertyChanged(); } }
         public SolidColorBrush Color
         {
             get
             {
-                AddtilList();
-                return Test();
+                return Test(this);
             }
-            set { _color = value; OnPropertyChanged(); }
+            set { _color = value; OnPropertyChanged(nameof(_color)); }
         }
-
-
+        
         public Lokaler(int etage, string type, string navn, string bygning)
         {
             Etage = etage;
             Type = type;
             Navn = navn;
             Bygning = bygning;
-
         }
 
         public Lokaler()
@@ -53,12 +49,9 @@ namespace ZealandRoomBooking.Model
         }
 
 
-
-
         private static readonly ObservableCollection<LokaleBookinger> _alleLokaleBookingers = new ObservableCollection<LokaleBookinger>();
         private static readonly ObservableCollection<Bookinger> _alleBookingers = new ObservableCollection<Bookinger>();
         private static readonly ObservableCollection<Lokaler> _alleLokaler = new ObservableCollection<Lokaler>();
-
 
         public ObservableCollection<LokaleBookinger> MineLokalerBookingers
         {
@@ -77,7 +70,6 @@ namespace ZealandRoomBooking.Model
 
         public void AddtilList()
         {
-
             ObservableCollection<LokaleBookinger> test1 = UserViewModel.ListOfLokaleBookinger;
             ObservableCollection<Bookinger> test2 = UserViewModel.ListOfBookinger;
             ObservableCollection<Lokaler> test3 = UserViewModel.ListOfRooms;
@@ -100,81 +92,86 @@ namespace ZealandRoomBooking.Model
             }
         }
 
-
-        public int fick = 0;
-
-        public SolidColorBrush Test()
+        public SolidColorBrush Test(Lokaler a)
         {
-
             RefBookinger = new Bookinger();
             RefLokaleBookinger = new LokaleBookinger();
             RefUser = new User();
 
-            LedighedsSortCheckBookinger();
-            foreach (var a in _alleLokaler)
+            foreach (var b in _alleLokaler)
             {
-                foreach (var b in CheckedBookinger)
+                if (a.LokaleId == b.LokaleId)
                 {
-                    if (a.LokaleId == LokaleId && a.Type == "Klasselokale" && RefUser.CheckedUser.Usertype == "Elev" && a.BookingStatus <= 1 && b.Date == Dato)
-                    {
-                        a._color = new SolidColorBrush(Colors.GreenYellow);
-                        _color = a._color;
-                        OnPropertyChanged(nameof(Color));
-                        return _color;
-
-                    }
-                    else if (a.LokaleId == LokaleId && a.Type == "Klasselokale" && RefUser.CheckedUser.Usertype == "Elev" && a.BookingStatus > 1 && b.Date == Dato)
-                    {
-                        a._color = new SolidColorBrush(Colors.Red);
-                        _color = a._color;
-                        OnPropertyChanged(nameof(Color));
-                        return _color;
-
-                    }
-                    else if (a.LokaleId == LokaleId && a.Type == "Møderum" && RefUser.CheckedUser.Usertype == "Elev")
+                    if (RefUser.CheckedUser.Usertype == "Elev")
                     {
 
-                        if (a.BookingStatus >= 0 && b.Date == Dato)
+                        if (a.Type == "Klasselokale" && b.BookingStatus <= 1)
+                        {
+                            a._color = new SolidColorBrush(Colors.Green);
+                            _color = a._color;
+                            OnPropertyChanged(nameof(_color));
+                            return _color;
+
+                        }
+                        else if (a.Type == "Klasselokale" && b.BookingStatus > 1)
                         {
                             a._color = new SolidColorBrush(Colors.Red);
                             _color = a._color;
-                            OnPropertyChanged(nameof(Color));
+                            OnPropertyChanged(nameof(_color));
+                            return _color;
+
+                        }
+                        else if (a.Type == "Møderum" && b.BookingStatus > 0)
+                        {
+                            a._color = new SolidColorBrush(Colors.Red);
+                            _color = a._color;
+                            OnPropertyChanged(nameof(_color));
                             return _color;
                         }
-
+                    }
+                    else if (RefUser.CheckedUser.Usertype == "Lære")
+                    {
+                        if (a.Type == "Klasselokale" && b.BookingStatus >= 1 && Dato.Date < DatoDageFrem.AddDays(3).Date)
+                        {
+                            a._color = new SolidColorBrush(Colors.Red);
+                            _color = a._color;
+                            OnPropertyChanged(nameof(_color));
+                            return _color;
+                        }
+                        else if (a.Type == "Klasselokale" && b.BookingStatus >= 1 && b.BookingStatus < 3 && DateTime.Today.Date <= DatoDageFrem.AddDays(3))
+                        {
+                            a._color = new SolidColorBrush(Colors.Yellow);
+                            _color = a._color;
+                            OnPropertyChanged(nameof(_color));
+                            return _color;
+                        }
+                        else if (a.Type == "Klasselokale" && b.BookingStatus > 2)
+                        {
+                            a._color = new SolidColorBrush(Colors.Red);
+                            _color = a._color;
+                            OnPropertyChanged(nameof(_color));
+                            return _color;
+                        }
+                        else if (a.Type == "Møderum" && b.BookingStatus > 0 && DateTime.Today.Date < DatoDageFrem.AddDays(3) && DateTime.Today.Date < DatoDageFrem.AddDays(2) && DateTime.Today.Date < DatoDageFrem.AddDays(1))
+                        {
+                            a._color = new SolidColorBrush(Colors.Red);
+                            _color = a._color;
+                            OnPropertyChanged(nameof(_color));
+                            return _color;
+                        }
                     }
                 }
             }
+
             return _color;
         }
 
-        public static DateTime Dato = new DateTime(2020, 05, 23);
+
+        public DateTime Dato = UserViewModel.BookingDate;
+        public DateTime DatoDageFrem = DateTime.Today;
         public LokaleBookinger RefLokaleBookinger { get; set; }
         public static Bookinger RefBookinger { get; set; }
         public User RefUser { get; set; }
-        public UserViewModel RefUserViewModel { get; set; }
-
-        public static ObservableCollection<Bookinger> CheckedBookinger = new ObservableCollection<Bookinger>();
-
-        public List<Bookinger> LedighedsSortCheckBookinger()
-        {
-            CheckedBookinger.Clear();
-            if (_alleBookingers.Count != 0)
-            {
-                for (int i = 0; i < _alleBookingers.Count; i++)
-                {
-                    foreach (var a in MineBookingers)
-                    {
-                        if (a.Date == Dato)
-                        {
-                            CheckedBookinger.Add(a);
-                        }
-                    }
-                }
-            }
-            return CheckedBookinger;
-        }
-
 
 
         public override string ToString()
