@@ -18,7 +18,7 @@ namespace ZealandRoomBooking.Model
 {
     public class Lokaler : INotifyPropertyChanged
     {
-        private SolidColorBrush _color = new SolidColorBrush(Colors.GreenYellow);
+        private SolidColorBrush _color;
         private static int _bookingStatus = 0;
         public int LokaleId { get; set; }
         public int Etage { get; set; }
@@ -29,7 +29,11 @@ namespace ZealandRoomBooking.Model
         public int BookingStatus { get { return _bookingStatus; } set { _bookingStatus = value; OnPropertyChanged(); } }
         public SolidColorBrush Color
         {
-            get { return Test(); }
+            get
+            {
+                AddtilList();
+                return Test();
+            }
             set { _color = value; OnPropertyChanged(); }
         }
 
@@ -51,40 +55,48 @@ namespace ZealandRoomBooking.Model
 
 
 
-        private static readonly List<LokaleBookinger> AlleLokaleBookingers = new List<LokaleBookinger>();
-        private static readonly List<Bookinger> AlleBookingers = new List<Bookinger>();
+        private static readonly ObservableCollection<LokaleBookinger> _alleLokaleBookingers = new ObservableCollection<LokaleBookinger>();
+        private static readonly ObservableCollection<Bookinger> _alleBookingers = new ObservableCollection<Bookinger>();
+        private static readonly ObservableCollection<Lokaler> _alleLokaler = new ObservableCollection<Lokaler>();
 
 
-        public static List<LokaleBookinger> MineLokalerBookingers
+        public ObservableCollection<LokaleBookinger> MineLokalerBookingers
         {
-            get { return AlleLokaleBookingers; }
-        }
-        public static ObservableCollection<Bookinger> MineBookingers
-        {
-            get { return UserViewModel.ListOfBookinger; }
+            get { return _alleLokaleBookingers; }
         }
 
-        public async void HentFraPersistency()
+        public ObservableCollection<Bookinger> MineBookingers
+        {
+            get { return _alleBookingers; }
+
+        }
+        public ObservableCollection<Lokaler> MineLokaler
+        {
+            get { return _alleLokaler; }
+        }
+
+        public void AddtilList()
         {
 
-            //RefUserViewModel = new UserViewModel();
-            //foreach (var a in RefUserViewModel.ListOfRooms)
-            //{
-            //    _alleLokalers.Add(a);
-            //}
-
-            await PersistencyService<LokaleBookinger>.GetObjects("LokaleBookinger");
-            ObservableCollection<LokaleBookinger> test1 = PersistencyService<LokaleBookinger>.HentCollection;
+            ObservableCollection<LokaleBookinger> test1 = UserViewModel.ListOfLokaleBookinger;
+            ObservableCollection<Bookinger> test2 = UserViewModel.ListOfBookinger;
+            ObservableCollection<Lokaler> test3 = UserViewModel.ListOfRooms;
+            _alleLokaleBookingers.Clear();
             foreach (var o in test1)
             {
-                AlleLokaleBookingers.Add(o);
+                _alleLokaleBookingers.Add(o);
             }
+            _alleBookingers.Clear();
 
-            await PersistencyService<Bookinger>.GetObjects("Bookinger");
-            ObservableCollection<Bookinger> test2 = PersistencyService<Bookinger>.HentCollection;
             foreach (var o in test2)
             {
-                AlleBookingers.Add(o);
+                _alleBookingers.Add(o);
+            }
+
+            _alleLokaler.Clear();
+            foreach (var o in test3)
+            {
+                _alleLokaler.Add(o);
             }
         }
 
@@ -97,113 +109,66 @@ namespace ZealandRoomBooking.Model
             RefBookinger = new Bookinger();
             RefLokaleBookinger = new LokaleBookinger();
             RefUser = new User();
-            LedighedsSortCheckBookinger(UserViewModel.ListOfLokaleBookinger);
-            foreach (var a in SimpletonLokaler.Instance.MineLokaler)
+
+            LedighedsSortCheckBookinger();
+            foreach (var a in _alleLokaler)
             {
-                if (a.LokaleId == LokaleId && a.Type == "Klasselokale" && RefUser.CheckedUser.Usertype == "Elev")
+                foreach (var b in CheckedBookinger)
                 {
-                    foreach (var b in CheckedBookinger)
+                    if (a.LokaleId == LokaleId && a.Type == "Klasselokale" && RefUser.CheckedUser.Usertype == "Elev" && a.BookingStatus <= 1 && b.Date == Dato)
+                    {
+                        a._color = new SolidColorBrush(Colors.GreenYellow);
+                        _color = a._color;
+                        OnPropertyChanged(nameof(Color));
+                        return _color;
+
+                    }
+                    else if (a.LokaleId == LokaleId && a.Type == "Klasselokale" && RefUser.CheckedUser.Usertype == "Elev" && a.BookingStatus > 1 && b.Date == Dato)
+                    {
+                        a._color = new SolidColorBrush(Colors.Red);
+                        _color = a._color;
+                        OnPropertyChanged(nameof(Color));
+                        return _color;
+
+                    }
+                    else if (a.LokaleId == LokaleId && a.Type == "Møderum" && RefUser.CheckedUser.Usertype == "Elev")
                     {
 
-                        if (RefUser.CheckedUser.UserId == b.UserId)
-                        {
-                            a._color = new SolidColorBrush(Colors.Yellow);
-                            _color = a._color; OnPropertyChanged(nameof(Color));
-                            return _color;
-                        }
-                    }
-                }
-                else if (a.LokaleId == LokaleId && RefUser.CheckedUser.Usertype == "Lære" || a.LokaleId == LokaleId && RefUser.CheckedUser.Usertype == "Elev" && a.Type == "Møderum")
-                {
-                    foreach (var b in CheckedBookinger)
-                    {
-                        if (RefUser.CheckedUser.UserId == b.UserId)
+                        if (a.BookingStatus >= 0 && b.Date == Dato)
                         {
                             a._color = new SolidColorBrush(Colors.Red);
-                            _color = a._color; OnPropertyChanged(nameof(Color));
+                            _color = a._color;
+                            OnPropertyChanged(nameof(Color));
                             return _color;
                         }
+
                     }
                 }
-                
             }
             return _color;
         }
 
-        public static DateTime Dato = new DateTime(2020, 05, 20);
+        public static DateTime Dato = new DateTime(2020, 05, 23);
         public LokaleBookinger RefLokaleBookinger { get; set; }
         public static Bookinger RefBookinger { get; set; }
         public User RefUser { get; set; }
-        //public void LedighedsCheck()
-        //{
-
-
-        //    RefUser = new User();
-
-        //    if (AlleLokaleBookingers.Find(_bookingerPredicate) != null && CheckedBookinger.Date == Dato && RefUser.CheckedUser.UserId == CheckedBookinger.UserId && RefUser.CheckedUser.Usertype == "Elev")
-        //    {
-        //        fick++;
-        //    }
-        //    else if (AlleLokaleBookingers.Find(_bookingerPredicate) != null && CheckedBookinger.Date == Dato && RefUser.CheckedUser.UserId == CheckedBookinger.UserId &&
-        //             RefUser.CheckedUser.Usertype == "Lære")
-        //    {
-        //        fick = 2;
-        //    }
-
-        //    //if (RefLokaleBookinger.LokaleId == AlleLokalers[SelectedItem].LokaleId && RefBookinger.Date == Dato &&
-        //    //    RefUser.CheckedUser.Usertype == "Elev" && AlleLokalers[SelectedItem].Type == "Klasselokale")
-        //    //{
-        //    //    fick = 1;
-        //    //}
-        //    //else if (RefLokaleBookinger.LokaleId == AlleLokalers[SelectedItem].LokaleId && RefBookinger.Date == Dato &&
-        //    //         RefUser.CheckedUser.Usertype == "Elev" && AlleLokalers[SelectedItem].Type == "Møderum")
-        //    //{
-        //    //    fick = 2;
-        //    //}
-        //    //else if (RefLokaleBookinger.LokaleId == AlleLokalers[SelectedItem].LokaleId && RefBookinger.Date == Dato &&
-        //    //         RefUser.CheckedUser.Usertype == "Lære" && AlleLokalers[SelectedItem].Type == "Klasselokale")
-        //    //{
-        //    //    fick = 2;
-        //    //}
-        //    //else if (RefLokaleBookinger.LokaleId == AlleLokalers[SelectedItem].LokaleId && RefBookinger.Date == Dato &&
-        //    //         RefUser.CheckedUser.Usertype == "Lære" && AlleLokalers[SelectedItem].Type == "Møderum")
-        //    //{
-        //    //    fick = 2;
-        //    //}
-
-        //    //return fick = 0;
-
-
-        //    //if (AlleLokaleBookingers.Find(_lokaleBookingerPredicate) != null && LokaleIdFraViewModel == LokaleId)
-        //    //{
-        //    //    _color = new SolidColorBrush(Colors.GreenYellow); OnPropertyChanged("Color");
-        //    //}
-        //    //else
-        //    //{
-        //    //    //_color = Colors.Blue; OnPropertyChanged("Color");
-        //    //    _color = new SolidColorBrush(Colors.Blue); OnPropertyChanged("Color");
-        //    //}
-
-
-        //}
+        public UserViewModel RefUserViewModel { get; set; }
 
         public static ObservableCollection<Bookinger> CheckedBookinger = new ObservableCollection<Bookinger>();
 
-        public static int SelectedItem { get { return RefUserViewModel.SelectedRoom; } }
-        public static UserViewModel RefUserViewModel { get; set; }
-        public int LokaleIdFraViewModel { get; set; }
-
-        //private readonly Predicate<List<LokaleBookinger>> _bookingerPredicate = new Predicate<List<LokaleBookinger>>(LedighedsSortCheckBookinger);
-
-        public static ObservableCollection<Bookinger> LedighedsSortCheckBookinger(ObservableCollection<LokaleBookinger> lokaleBookinger)
+        public List<Bookinger> LedighedsSortCheckBookinger()
         {
-            for (int i = 0; i < UserViewModel.ListOfBookinger.Count; i++)
+            CheckedBookinger.Clear();
+            if (_alleBookingers.Count != 0)
             {
-                foreach (var a in MineBookingers)
+                for (int i = 0; i < _alleBookingers.Count; i++)
                 {
-                    if (a.BookingId == lokaleBookinger[i].BookingId && a.Date == Dato)
+                    foreach (var a in MineBookingers)
                     {
-                        CheckedBookinger.Add(a);
+                        if (a.Date == Dato)
+                        {
+                            CheckedBookinger.Add(a);
+                        }
                     }
                 }
             }
