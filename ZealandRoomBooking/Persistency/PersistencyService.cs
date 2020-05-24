@@ -36,7 +36,7 @@ namespace ZealandRoomBooking.Persistency
 
                 try
                 {
-                    HentCollection.Clear();
+                    
                     var getobject = await client.GetAsync($"api/{obj}");
                     if (getobject.IsSuccessStatusCode)
                     {
