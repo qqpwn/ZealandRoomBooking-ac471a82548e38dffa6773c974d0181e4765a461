@@ -29,7 +29,6 @@ namespace ZealandRoomBooking.ViewModel
         public string Navn { get; set; }
         public string Bygning { get; set; }
 
-
         private static ObservableCollection<Bookinger> _listOfBookinger = new ObservableCollection<Bookinger>();
         private static ObservableCollection<LokaleBookinger> _listOfLokaleBookinger = new ObservableCollection<LokaleBookinger>();
         private string _dateBarString;
@@ -50,12 +49,13 @@ namespace ZealandRoomBooking.ViewModel
 
         public Lokaler RefLokaler { get; set; }
         public static User RefUser = new User();
-        public ICommand BookRoomCommand { get; set; }
         public int SelectedRoom { get; set; }
+        public ICommand BookRoomCommand { get; set; }
         public ICommand DayForwardCommand { get; set; }
         public ICommand DayBackwardsCommand { get; set; }
         public static DateTime BookingDate { get; set; } = DateTime.Now;
         public int DaysAdded { get; set; } = 0;
+        #endregion
 
         #region DateBarString
         public string DateBarString
@@ -73,15 +73,13 @@ namespace ZealandRoomBooking.ViewModel
         public UserViewModel()
         {
             HentLokaler();
-            HentAlleCollections();
+            HentAlleBookinger();
             DateToString();
             BookRoomCommand = new RelayCommand(BookRoom);
             DayForwardCommand = new RelayCommand(DayForward);
             DayBackwardsCommand = new RelayCommand(DayBackwards);
             RefLokaler = new Lokaler();
             RefLokaler.AddtilList();
-            
-
         }
         #endregion
 
@@ -116,36 +114,39 @@ namespace ZealandRoomBooking.ViewModel
 
         #region GetCollectionsMethod
 
-        public async void HentAlleCollections()
+
+        public async void HentAlleBookinger()
         {
             ObservableCollection<Bookinger> tempBCollection = await PersistencyService<Bookinger>.GetObjects("Bookinger");
             _listOfBookinger = tempBCollection;
 
             ObservableCollection<LokaleBookinger> tempLBCollection = await PersistencyService<LokaleBookinger>.GetObjects("LokaleBookinger");
             _listOfLokaleBookinger = tempLBCollection;
+
             SetRoomStatus();
         }
-        #endregion
 
         public async void HentLokaler()
         {
             ObservableCollection<Lokaler> tempLCollection = await PersistencyService<Lokaler>.GetObjects("Lokaler");
             ListOfRooms = tempLCollection;
         }
+        #endregion
 
         #region SetRoomStatusMethod
         public async void SetRoomStatus()
         {
-            if (ListOfBookinger.Count != 0)
+            foreach (var room in ListOfRooms)
             {
-                foreach (var booking in ListOfBookinger)
+                room.BookingStatus = 0;
+            }
+            foreach (var booking in ListOfBookinger)
+            {
+                if (booking.Date.Date == BookingDate.Date)
                 {
-                    if (booking.Date.Day == BookingDate.Day && booking.Date.Month == BookingDate.Month && booking.Date.Year == BookingDate.Year)
+                    var tempUser = await PersistencyService<User>.GetObjectFromId(booking.UserId, "User");
+                    foreach (var lokaleBooking in ListOfLokaleBookinger)
                     {
-                        var tempUser = await PersistencyService<User>.GetObjectFromId(booking.UserId, "User");
-                        
-                        foreach (var lokaleBooking in ListOfLokaleBookinger)
-                        {
                             if (lokaleBooking.BookingId == booking.BookingId)
                             {
                                 foreach (var room in ListOfRooms)
@@ -162,7 +163,7 @@ namespace ZealandRoomBooking.ViewModel
                                             room.BookingStatus = room.BookingStatus + 3;
                                             break;
                                         }
-                                        
+
                                     }
                                 }
 
@@ -201,7 +202,7 @@ namespace ZealandRoomBooking.ViewModel
                     }
                     else
                     {
-                        if (BookingDate.Day >= DateTime.Now.AddDays(3).Day && BookingDate.Month >= DateTime.Now.Month && selectedRoom.BookingStatus <= 2)
+                        if (BookingDate.Date >= DateTime.Now.AddDays(3).Date && selectedRoom.BookingStatus <= 2)
                         {
                             DeleteElevBooking();
                             BookingCheckLærer();
@@ -225,7 +226,7 @@ namespace ZealandRoomBooking.ViewModel
                         }
                         else
                         {
-                            if (BookingDate.Day >= DateTime.Now.AddDays(3).Day && BookingDate.Month >= DateTime.Now.Month && selectedRoom.BookingStatus <= 2)
+                            if (BookingDate.Date >= DateTime.Now.AddDays(3).Date && selectedRoom.BookingStatus <= 2)
                             {
                                 DeleteElevBooking();
                                 BookingCheckLærer();
@@ -242,7 +243,7 @@ namespace ZealandRoomBooking.ViewModel
             var roomStatus = selectedRoom.BookingStatus;
             foreach (var booking in ListOfBookinger)
             {
-                if (roomStatus > 0 && booking.Date.Day == BookingDate.Day && booking.Date.Month == BookingDate.Month && booking.Date.Year == BookingDate.Year)
+                if (roomStatus > 0 && booking.Date.Date == BookingDate.Date)
                 {
                     foreach (var lokaleBooking in ListOfLokaleBookinger)
                     {
@@ -268,14 +269,18 @@ namespace ZealandRoomBooking.ViewModel
         public void BookingCheckElev()
         {
             var bookingOnThisDate = 0;
+            var bookingCount = 0;
             foreach (var booking in ListOfBookinger)
             {
-                if (bookingOnThisDate == 0)
+                if (bookingOnThisDate == 0 && bookingCount <= 2)
                 {
-                    if (booking.UserId == RefUser.CheckedUser.UserId && booking.Date.Day == BookingDate.Day
-                                                                     && booking.Date.Month == BookingDate.Month && booking.Date.Year == BookingDate.Year)
+                    if (booking.UserId == RefUser.CheckedUser.UserId)
                     {
-                        bookingOnThisDate++;
+                        bookingCount++;
+                        if (booking.Date.Day == BookingDate.Day && booking.Date.Month == BookingDate.Month && booking.Date.Year == BookingDate.Year)
+                        {
+                            bookingOnThisDate++;
+                        }
                     }
                 }
                 else
@@ -283,7 +288,7 @@ namespace ZealandRoomBooking.ViewModel
                     break;
                 }
             }
-            if (bookingOnThisDate == 0)
+            if (bookingOnThisDate == 0 && bookingCount <= 2)
             {
                 CreateRoomBooking();
             }
@@ -311,10 +316,7 @@ namespace ZealandRoomBooking.ViewModel
             {
                 CreateRoomBooking();
             }
-
         }
-
-
 
         public async void CreateRoomBooking()
         {
@@ -326,7 +328,6 @@ namespace ZealandRoomBooking.ViewModel
             int getId = getBooking.Last().BookingId;
 
             LokaleBookinger lokalebooking = new LokaleBookinger(getId, selectedRoom.LokaleId);
-            Lokaler tempLokale = new Lokaler(selectedRoom.Etage, $"{selectedRoom.Type}", $"{selectedRoom.Navn}", $"{selectedRoom.Bygning}");
 
             await PersistencyService<LokaleBookinger>.PostObject("LokaleBookinger", lokalebooking);
         }

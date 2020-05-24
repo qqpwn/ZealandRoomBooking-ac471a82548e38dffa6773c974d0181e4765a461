@@ -135,6 +135,7 @@
     <Compile Include="RelayCommand\RelayArgCommand.cs" />
     <Compile Include="RelayCommand\RelayCommand.cs" />
     <Compile Include="ViewModel\LokalePageViewModel.cs" />
+    <Compile Include="ViewModel\MyBookingsViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="View\Home.xaml.cs">
