@@ -30,7 +30,7 @@ namespace ZealandRoomBooking.ViewModel
         public string Bygning { get; set; }
         
 
-        public Lokaler RefLokaler = new Lokaler();
+        
 
         private static ObservableCollection<Lokaler> _listOfRooms = new ObservableCollection<Lokaler>();
         private static ObservableCollection<Bookinger> _listOfBookinger = new ObservableCollection<Bookinger>();
@@ -54,6 +54,7 @@ namespace ZealandRoomBooking.ViewModel
             get { return _listOfLokaleBookinger; }
         }
 
+        public Lokaler RefLokaler { get; set; }
         public static User RefUser = new User();
         public ICommand BookRoomCommand { get; set; }
         public int SelectedRoom { get; set; }
@@ -62,6 +63,7 @@ namespace ZealandRoomBooking.ViewModel
         public DateTime BookingDate { get; set; } = DateTime.Now;
         public int DaysAdded { get; set; } = 0;
 
+        #region DateBarString
         public string DateBarString
         {
             get => _dateBarString;
@@ -70,21 +72,20 @@ namespace ZealandRoomBooking.ViewModel
                 _dateBarString = value;
                 OnPropertyChanged("DateBarString");
             }
-        } 
+        }
         #endregion
 
         #region Constructor
         public UserViewModel()
         {
             HentLokaler();
-            RefLokaler = new Lokaler();
-            RefLokaler.HentFraPersistency();
             HentAlleCollections();
             DateToString();
             BookRoomCommand = new RelayCommand(BookRoom);
             DayForwardCommand = new RelayCommand(DayForward);
             DayBackwardsCommand = new RelayCommand(DayBackwards);
-        } 
+
+        }
         #endregion
 
         #region BookingDateMethods
@@ -118,26 +119,23 @@ namespace ZealandRoomBooking.ViewModel
 
         #region GetCollectionsMethod
 
-        public async void HentAlleCollections()
+        public static async void HentAlleCollections()
         {
-            ObservableCollection<Bookinger> tempBCollection =
-            await PersistencyService<Bookinger>.GetObjects("Bookinger");
+            ObservableCollection<Bookinger> tempBCollection = await PersistencyService<Bookinger>.GetObjects("Bookinger");
             _listOfBookinger = tempBCollection;
 
             ObservableCollection<LokaleBookinger> tempLBCollection = await PersistencyService<LokaleBookinger>.GetObjects("LokaleBookinger");
             _listOfLokaleBookinger = tempLBCollection;
 
-            SetRoomStatus();
         }
         #endregion
 
-public SolidColorBrush Color { get { return RefLokaler.Color; } set { RefLokaler.Color = value; OnPropertyChanged(); } }
-
-        
-        public  void HentLokaler()
+        public static async void HentLokaler()
         {
-            _listOfRooms = SimpletonLokaler.Instance.MineLokaler;
+            ObservableCollection<Lokaler> tempLCollection = await PersistencyService<Lokaler>.GetObjects("Lokaler");
+            _listOfRooms = tempLCollection;
         }
+
         #region SetRoomStatusMethod
         public async void SetRoomStatus()
         {
@@ -168,12 +166,12 @@ public SolidColorBrush Color { get { return RefLokaler.Color; } set { RefLokaler
                                     break;
                                 }
                             }
-                           break;
+                            break;
                         }
                     }
                 }
             }
-        } 
+        }
         #endregion
 
         #region RoomBookingMethods
@@ -249,7 +247,7 @@ public SolidColorBrush Color { get { return RefLokaler.Color; } set { RefLokaler
             {
                 if (booking.Date.Day == BookingDate.Day && booking.Date.Month == BookingDate.Month && booking.Date.Year == BookingDate.Year)
                 {
-                    
+
                     foreach (var lokaleBooking in ListOfLokaleBookinger)
                     {
                         if (lokaleBooking.BookingId == booking.BookingId && lokaleBooking.LokaleId == selectedRoom.LokaleId)
@@ -336,7 +334,7 @@ public SolidColorBrush Color { get { return RefLokaler.Color; } set { RefLokaler
 
         }
 
-       
+
 
         public async void CreateRoomBooking()
         {
@@ -362,7 +360,7 @@ public SolidColorBrush Color { get { return RefLokaler.Color; } set { RefLokaler
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        } 
+        }
         #endregion
     }
 }
