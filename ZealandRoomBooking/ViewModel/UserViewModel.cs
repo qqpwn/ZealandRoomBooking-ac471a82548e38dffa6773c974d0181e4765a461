@@ -22,7 +22,7 @@ namespace ZealandRoomBooking.ViewModel
 {
     public class UserViewModel : INotifyPropertyChanged
     {
-
+        #region Properties
         public int LokaleId { get; set; }
         public int Etage { get; set; }
         public string Type { get; set; }
@@ -37,9 +37,7 @@ namespace ZealandRoomBooking.ViewModel
         private static ObservableCollection<LokaleBookinger> _listOfLokaleBookinger = new ObservableCollection<LokaleBookinger>();
         private string _dateBarString;
 
-
         public static ObservableCollection<Lokaler> ListOfRooms
-
         {
             get { return _listOfRooms; }
         }
@@ -78,7 +76,6 @@ namespace ZealandRoomBooking.ViewModel
         {
             HentLokaler();
             RefLokaler = new Lokaler();
-            RefLokaler.HentFraPersistency();
             HentAlleCollections();
             DateToString();
             BookRoomCommand = new RelayCommand(BookRoom);
@@ -131,13 +128,14 @@ namespace ZealandRoomBooking.ViewModel
         }
         #endregion
 
-public SolidColorBrush Color { get { return RefLokaler.Color; } set { RefLokaler.Color = value; OnPropertyChanged(); } }
+        public SolidColorBrush Color { get { return RefLokaler.Color; } set { RefLokaler.Color = value; OnPropertyChanged(); } }
 
-        
-        public  void HentLokaler()
+        public async void HentLokaler()
         {
-            _listOfRooms = SimpletonLokaler.Instance.MineLokaler;
+            ObservableCollection<Lokaler> tempRoomCollection = await PersistencyService<Lokaler>.GetObjects("Lokaler");
+            _listOfRooms = tempRoomCollection;
         }
+
         #region SetRoomStatusMethod
         public async void SetRoomStatus()
         {
@@ -168,7 +166,8 @@ public SolidColorBrush Color { get { return RefLokaler.Color; } set { RefLokaler
                                     break;
                                 }
                             }
-                           break;
+
+                            break;
                         }
                     }
                 }
@@ -202,12 +201,10 @@ public SolidColorBrush Color { get { return RefLokaler.Color; } set { RefLokaler
                     }
                     else
                     {
-                        //Work in progress, lærer skal ikke kunne overskrive en anden lærers booking
-                        //og den skal også slette elevens booking
                         if (BookingDate.Day >= DateTime.Now.AddDays(3).Day && selectedRoom.BookingStatus <= 2)
                         {
-                            BookingCheckLærer();
                             DeleteElevBooking();
+                            BookingCheckLærer();
                         }
                     }
                 }
@@ -228,12 +225,10 @@ public SolidColorBrush Color { get { return RefLokaler.Color; } set { RefLokaler
                         }
                         else
                         {
-                            //Work in progress, lærer skal ikke kunne overskrive en anden lærers booking
-                            //og den skal også slette elevens booking
-                            if (BookingDate.Day >= DateTime.Now.AddDays(3).Day && selectedRoom.BookingStatus <= 2)
+                            if (BookingDate.Day >= DateTime.Now.AddDays(3).Day && BookingDate.Month >= DateTime.Now.Month && selectedRoom.BookingStatus <= 2)
                             {
-                                BookingCheckLærer();
                                 DeleteElevBooking();
+                                BookingCheckLærer();
                             }
                         }
                     }
@@ -247,41 +242,24 @@ public SolidColorBrush Color { get { return RefLokaler.Color; } set { RefLokaler
             var roomStatus = selectedRoom.BookingStatus;
             foreach (var booking in ListOfBookinger)
             {
-                if (booking.Date.Day == BookingDate.Day && booking.Date.Month == BookingDate.Month && booking.Date.Year == BookingDate.Year)
+                if (roomStatus > 0 && booking.Date.Day == BookingDate.Day && booking.Date.Month == BookingDate.Month && booking.Date.Year == BookingDate.Year)
                 {
-                    
                     foreach (var lokaleBooking in ListOfLokaleBookinger)
                     {
                         if (lokaleBooking.BookingId == booking.BookingId && lokaleBooking.LokaleId == selectedRoom.LokaleId)
                         {
-                            if (selectedRoom.Type == "Klasselokale")
-                            {
-                                if (roomStatus == 1)
-                                {
-                                    PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
-                                    PersistencyService<Bookinger>.DeleteObject(booking.BookingId, "Bookinger");
-                                    break;
-                                }
-                                else
-                                {
-                                    if (roomStatus == 2)
-                                    {
-                                        PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
-                                        PersistencyService<Bookinger>.DeleteObject(booking.BookingId, "Bookinger");
-                                        roomStatus--;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (selectedRoom.Type == "Møderum")
-                                {
-                                    PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
-                                    PersistencyService<Bookinger>.DeleteObject(booking.BookingId, "Bookinger");
-                                    break;
-                                }
-                            }
+                            PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
+                            PersistencyService<Bookinger>.DeleteObject(booking.BookingId, "Bookinger");
+                            roomStatus--;
+                            break;
                         }
+                    }
+                }
+                else
+                {
+                    if (roomStatus == 0)
+                    {
+                        break;
                     }
                 }
             }
@@ -346,7 +324,6 @@ public SolidColorBrush Color { get { return RefLokaler.Color; } set { RefLokaler
 
             var getBooking = await PersistencyService<Bookinger>.GetObjects("Bookinger");
             int getId = getBooking.Last().BookingId;
-
 
             LokaleBookinger lokalebooking = new LokaleBookinger(getId, selectedRoom.LokaleId);
             Lokaler tempLokale = new Lokaler(selectedRoom.Etage, $"{selectedRoom.Type}", $"{selectedRoom.Navn}", $"{selectedRoom.Bygning}");

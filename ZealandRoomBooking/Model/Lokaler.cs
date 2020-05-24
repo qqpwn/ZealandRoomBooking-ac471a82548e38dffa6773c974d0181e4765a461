@@ -59,9 +59,9 @@ namespace ZealandRoomBooking.Model
         {
             get { return AlleLokaleBookingers; }
         }
-        public static List<Bookinger> MineBookingers
+        public static ObservableCollection<Bookinger> MineBookingers
         {
-            get { return AlleBookingers; }
+            get { return UserViewModel.ListOfBookinger; }
         }
 
         public async void HentFraPersistency()
@@ -97,7 +97,7 @@ namespace ZealandRoomBooking.Model
             RefBookinger = new Bookinger();
             RefLokaleBookinger = new LokaleBookinger();
             RefUser = new User();
-            LedighedsSortCheckBookinger(AlleLokaleBookingers);
+            LedighedsSortCheckBookinger(UserViewModel.ListOfLokaleBookinger);
             foreach (var a in SimpletonLokaler.Instance.MineLokaler)
             {
                 if (a.LokaleId == LokaleId && a.Type == "Klasselokale" && RefUser.CheckedUser.Usertype == "Elev")
@@ -187,7 +187,7 @@ namespace ZealandRoomBooking.Model
 
         //}
 
-        public static List<Bookinger> CheckedBookinger = new List<Bookinger>();
+        public static ObservableCollection<Bookinger> CheckedBookinger = new ObservableCollection<Bookinger>();
 
         public static int SelectedItem { get { return RefUserViewModel.SelectedRoom; } }
         public static UserViewModel RefUserViewModel { get; set; }
@@ -195,17 +195,15 @@ namespace ZealandRoomBooking.Model
 
         //private readonly Predicate<List<LokaleBookinger>> _bookingerPredicate = new Predicate<List<LokaleBookinger>>(LedighedsSortCheckBookinger);
 
-
-        public static List<Bookinger> LedighedsSortCheckBookinger(List<LokaleBookinger> lokaleBookinger)
+        public static ObservableCollection<Bookinger> LedighedsSortCheckBookinger(ObservableCollection<LokaleBookinger> lokaleBookinger)
         {
-            for (int i = 0; i < AlleBookingers.Count; i++)
+            for (int i = 0; i < UserViewModel.ListOfBookinger.Count; i++)
             {
                 foreach (var a in MineBookingers)
                 {
                     if (a.BookingId == lokaleBookinger[i].BookingId && a.Date == Dato)
                     {
                         CheckedBookinger.Add(a);
-
                     }
                 }
             }
