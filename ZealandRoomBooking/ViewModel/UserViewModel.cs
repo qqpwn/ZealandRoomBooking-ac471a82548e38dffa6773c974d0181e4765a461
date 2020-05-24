@@ -54,7 +54,7 @@ namespace ZealandRoomBooking.ViewModel
         public ICommand DayForwardCommand { get; set; }
         public ICommand DayBackwardsCommand { get; set; }
         public static DateTime BookingDate { get; set; } = DateTime.Now;
-        public int DaysAdded { get; set; } = 0;
+        public static int DaysAdded { get; set; } = 0;
         #endregion
 
         #region DateBarString
@@ -147,28 +147,27 @@ namespace ZealandRoomBooking.ViewModel
                     var tempUser = await PersistencyService<User>.GetObjectFromId(booking.UserId, "User");
                     foreach (var lokaleBooking in ListOfLokaleBookinger)
                     {
-                            if (lokaleBooking.BookingId == booking.BookingId)
+                        if (lokaleBooking.BookingId == booking.BookingId)
+                        {
+                            foreach (var room in ListOfRooms)
                             {
-                                foreach (var room in ListOfRooms)
+                                if (room.LokaleId == lokaleBooking.LokaleId)
                                 {
-                                    if (room.LokaleId == lokaleBooking.LokaleId)
+                                    if (tempUser.Usertype == "Elev")
                                     {
-                                        if (tempUser.Usertype == "Elev")
-                                        {
-                                            room.BookingStatus++;
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            room.BookingStatus = room.BookingStatus + 3;
-                                            break;
-                                        }
-
+                                        room.BookingStatus++;
+                                        break;
                                     }
-                                }
+                                    else
+                                    {
+                                        room.BookingStatus = room.BookingStatus + 3;
+                                        break;
+                                    }
 
-                                break;
+                                }
                             }
+
+                            break;
                         }
                     }
                 }
