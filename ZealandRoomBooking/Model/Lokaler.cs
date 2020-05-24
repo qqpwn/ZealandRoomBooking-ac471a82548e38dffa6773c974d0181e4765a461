@@ -64,9 +64,11 @@ namespace ZealandRoomBooking.Model
         {
             get { return _alleLokaleBookingers; }
         }
+
         public ObservableCollection<Bookinger> MineBookingers
         {
             get { return _alleBookingers; }
+
         }
         public ObservableCollection<Lokaler> MineLokaler
         {
@@ -107,6 +109,7 @@ namespace ZealandRoomBooking.Model
             RefBookinger = new Bookinger();
             RefLokaleBookinger = new LokaleBookinger();
             RefUser = new User();
+
             LedighedsSortCheckBookinger();
             foreach (var a in _alleLokaler)
             {
@@ -151,7 +154,7 @@ namespace ZealandRoomBooking.Model
         public User RefUser { get; set; }
         public UserViewModel RefUserViewModel { get; set; }
 
-        public static List<Bookinger> CheckedBookinger = new List<Bookinger>();
+        public static ObservableCollection<Bookinger> CheckedBookinger = new ObservableCollection<Bookinger>();
 
         public List<Bookinger> LedighedsSortCheckBookinger()
         {
@@ -165,7 +168,6 @@ namespace ZealandRoomBooking.Model
                         if (a.Date == Dato)
                         {
                             CheckedBookinger.Add(a);
-
                         }
                     }
                 }
