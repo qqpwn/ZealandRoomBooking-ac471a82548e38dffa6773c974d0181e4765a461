@@ -152,13 +152,21 @@ namespace ZealandRoomBooking.Model
                             OnPropertyChanged(nameof(_color));
                             return _color;
                         }
-                        else if (a.Type == "Møderum" && b.BookingStatus > 0 && DateTime.Today.Date < DatoDageFrem.AddDays(3) && DateTime.Today.Date < DatoDageFrem.AddDays(2) && DateTime.Today.Date < DatoDageFrem.AddDays(1))
+                        else if (a.Type == "Møderum" && b.BookingStatus > 0 && Dato.Date < DatoDageFrem.AddDays(3).Date)
                         {
                             a._color = new SolidColorBrush(Colors.Red);
                             _color = a._color;
                             OnPropertyChanged(nameof(_color));
                             return _color;
                         }
+                        else if (a.Type == "Møderum" && b.BookingStatus >= 1 && b.BookingStatus < 3 && DateTime.Today.Date <= DatoDageFrem.AddDays(3))
+                        {
+                            a._color = new SolidColorBrush(Colors.Yellow);
+                            _color = a._color;
+                            OnPropertyChanged(nameof(_color));
+                            return _color;
+                        }
+                       
                     }
                 }
             }

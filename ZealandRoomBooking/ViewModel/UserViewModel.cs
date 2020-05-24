@@ -173,6 +173,7 @@ namespace ZealandRoomBooking.ViewModel
                 }
             }
         }
+
         #endregion
 
         #region RoomBookingMethods
