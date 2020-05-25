@@ -64,7 +64,7 @@ namespace ZealandRoomBooking.ViewModel
             set
             {
                 _dateBarString = value;
-                OnPropertyChanged("DateBarString");
+                OnPropertyChanged(nameof(DateBarString));
             }
         }
         #endregion

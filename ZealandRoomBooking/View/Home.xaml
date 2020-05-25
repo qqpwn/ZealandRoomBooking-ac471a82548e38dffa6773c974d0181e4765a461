@@ -7,8 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:viewModel="using:ZealandRoomBooking.ViewModel"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.DataContext>
+        <viewModel:HomeViewModel/>
+    </Page.DataContext>
 
     <Grid Background="#fff387">
         <Grid.RowDefinitions>
@@ -26,7 +30,7 @@
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Column="1" Width="144" Height="43" HorizontalAlignment="Center" VerticalAlignment="Center" FocusVisualPrimaryBrush="{x:Null}" FontSize="26"
             FontWeight="Bold"
-            Text="Elev/Lærer"
+            Text="{Binding LoggedInUserText}"
             TextAlignment="Center"
             HorizontalTextAlignment="Center"
             TextWrapping="Wrap" />
