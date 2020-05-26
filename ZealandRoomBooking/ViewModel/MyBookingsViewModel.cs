@@ -47,6 +47,8 @@ namespace ZealandRoomBooking.ViewModel
             GetMyBookings();
         }
 
+
+        //Henter den loggede inds brugers bookinger
         public void GetMyBookings()
         {
             foreach (var booking in AllBookings)
@@ -73,6 +75,7 @@ namespace ZealandRoomBooking.ViewModel
             }
         }
 
+        //Delete booking
         public void DeleteBooking()
         {
             foreach (var lokaleBooking in AllLokaleBookings)

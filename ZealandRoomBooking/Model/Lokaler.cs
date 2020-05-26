@@ -18,6 +18,7 @@ namespace ZealandRoomBooking.Model
 {
     public class Lokaler : INotifyPropertyChanged
     {
+        //Default color for ListViewItem
         private SolidColorBrush _color = new SolidColorBrush(Colors.Green);
         public int BookingStatus { get; set; } = 0;
         public int LokaleId { get; set; }
@@ -30,7 +31,8 @@ namespace ZealandRoomBooking.Model
         {
             get
             {
-                return Test(this);
+                //Methode som sætter ListViewItem Background color
+                return ColorCode(this);
             }
             set { _color = value; OnPropertyChanged(nameof(_color)); }
         }
@@ -68,6 +70,7 @@ namespace ZealandRoomBooking.Model
             get { return _alleLokaler; }
         }
 
+        //Henter Listerne fra UserViewModel, så vi sikre på det de samme lister
         public void AddtilList()
         {
             ObservableCollection<LokaleBookinger> test1 = UserViewModel.ListOfLokaleBookinger;
@@ -92,12 +95,9 @@ namespace ZealandRoomBooking.Model
             }
         }
 
-        public SolidColorBrush Test(Lokaler a)
+        //Methode som sætter ListViewItem Background color
+        public SolidColorBrush ColorCode(Lokaler a)
         {
-            RefBookinger = new Bookinger();
-            RefLokaleBookinger = new LokaleBookinger();
-            RefUser = new User();
-
             foreach (var b in _alleLokaler)
             {
                 if (a.LokaleId == b.LokaleId)
@@ -177,8 +177,6 @@ namespace ZealandRoomBooking.Model
 
         public DateTime Dato = UserViewModel.BookingDate;
         public DateTime DatoDageFrem = DateTime.Today;
-        public LokaleBookinger RefLokaleBookinger { get; set; }
-        public static Bookinger RefBookinger { get; set; }
         public User RefUser { get; set; }
 
 
