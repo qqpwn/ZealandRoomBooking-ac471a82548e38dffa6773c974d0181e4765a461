@@ -17,6 +17,7 @@ namespace ZealandRoomBooking.ViewModel
             SetUserText();
         }
 
+        //Sætter Home textblock afhængig af bruger type, så man kan se hvilken bruger er logget ind
         public void SetUserText()
         {
             if (RefUser.CheckedUser.Usertype == "Elev")

@@ -15,6 +15,7 @@ namespace ZealandRoomBooking.ViewModel
     {
         public User RefUser { get; set; }
 
+        //Imput brugerinfo
         public string Username
         {
            set { User.InputUsername = value; }
@@ -30,7 +31,7 @@ namespace ZealandRoomBooking.ViewModel
         }
 
 
-
+        //Login knap binding
         public void CheckLoginMethode()
         {
             RefUser = new User();

@@ -44,8 +44,10 @@ namespace ZealandRoomBooking.Model
 
         
         public int LoginInt = 0; //0 = findes ikke, 1 = Elev, 2 = Lærer
-        public static User CheckedUserInfo;
 
+        public static User CheckedUserInfo; //Info for den bruger som er logget ind
+
+        //Checker om brugeren findes i databasen ved hjælp af en predicate og navigere til Home siden hvis de findes
         public async void CheckLogin()
         {
             await PersistencyService<User>.GetObjects("User");
@@ -81,9 +83,9 @@ namespace ZealandRoomBooking.Model
         public static string SearchElev = "Elev";
         public static string SearchLære = "Lære";
         
+
         public static bool LoginSearch(User user)
         {
-
             foreach (var o in MineUsers)
             {
                 if (o.Username == InputUsername && o.Password == InputPassword)

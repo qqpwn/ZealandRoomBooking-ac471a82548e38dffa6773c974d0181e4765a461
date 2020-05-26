@@ -84,6 +84,7 @@ namespace ZealandRoomBooking.ViewModel
         #endregion
 
         #region BookingDateMethods
+        //Sætter datobaren en dag frem / tilbage 
         public void DayForward()
         {
             if (DaysAdded < 30)
@@ -136,6 +137,7 @@ namespace ZealandRoomBooking.ViewModel
         #endregion
 
         #region SetRoomStatusMethod
+        //Sætter BookingStatus på hver lokale 
         public async void SetRoomStatus()
         {
             foreach (var room in ListOfRooms)
@@ -187,6 +189,7 @@ namespace ZealandRoomBooking.ViewModel
             selectedRoom = ListOfRooms[SelectedRoom];
         }
 
+        //Booker lokaler med checks
         public void BookRoom()
         {
             SelectedTempRoom();
@@ -204,7 +207,7 @@ namespace ZealandRoomBooking.ViewModel
                     }
                     else
                     {
-                        if (BookingDate.Date >= DateTime.Now.AddDays(3).Date && selectedRoom.BookingStatus <= 2)
+                        if (BookingDate.Date >= DateTime.Now.AddDays(3).Date && selectedRoom.BookingStatus <= 2 && RefUser.CheckedUser.Usertype == "Lære")
                         {
                             DeleteElevBooking();
                             BookingCheckLærer();
@@ -279,7 +282,7 @@ namespace ZealandRoomBooking.ViewModel
                     if (booking.UserId == RefUser.CheckedUser.UserId)
                     {
                         bookingCount++;
-                        if (booking.Date.Day == BookingDate.Day && booking.Date.Month == BookingDate.Month && booking.Date.Year == BookingDate.Year)
+                        if (booking.Date.Date == BookingDate.Date)
                         {
                             bookingOnThisDate++;
                         }
@@ -303,8 +306,7 @@ namespace ZealandRoomBooking.ViewModel
             {
                 if (bookingOnThisDate <= 2)
                 {
-                    if (booking.UserId == RefUser.CheckedUser.UserId && booking.Date.Day == BookingDate.Day
-                                                                     && booking.Date.Month == BookingDate.Month && booking.Date.Year == BookingDate.Year)
+                    if (booking.UserId == RefUser.CheckedUser.UserId && booking.Date.Date == BookingDate.Date)
                     {
                         bookingOnThisDate++;
                     }
