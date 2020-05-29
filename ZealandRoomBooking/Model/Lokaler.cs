@@ -177,7 +177,7 @@ namespace ZealandRoomBooking.Model
 
         public DateTime Dato = UserViewModel.BookingDate;
         public DateTime DatoDageFrem = DateTime.Today;
-        public User RefUser { get; set; }
+        public User RefUser = new User();
 
 
         public override string ToString()
