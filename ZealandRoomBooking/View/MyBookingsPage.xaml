@@ -2,75 +2,116 @@
     x:Class="ZealandRoomBooking.View.MyBookingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ZealandRoomBooking.View"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:ZealandRoomBooking.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:ZealandRoomBooking.ViewModel"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
     <Page.DataContext>
-        <viewModel:MyBookingsViewModel/>
+        <viewModel:MyBookingsViewModel />
     </Page.DataContext>
 
-    <Grid>
+    <Grid Background="#fff387">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Mine Bookinger" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" TextAlignment="Center" VerticalAlignment="Center" FontSize="45" FontWeight="Bold"/>
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            VerticalAlignment="Center"
+            FontSize="45"
+            FontWeight="Bold"
+            Text="Mine Bookinger"
+            TextAlignment="Center" />
 
-        <ListView Name="ListViewMyBookings" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="4" Margin="35,0,35,0" ItemsSource="{Binding MyBookingsList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedBooking, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <ListView
+            Name="ListViewMyBookings"
+            Grid.Row="1"
+            Grid.RowSpan="4"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Margin="35,0,35,0"
+            ItemsSource="{Binding MyBookingsList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectedIndex="{Binding SelectedBooking, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ListViewItem>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Lokake:" FontSize="24"></TextBlock>
-                            <TextBlock Text="{Binding RoomName}" FontSize="24"></TextBlock>
-                            <TextBlock Text="  Dato: " FontSize="24"></TextBlock>
-                            <TextBlock Text="{Binding Date.Day}" FontSize="24"></TextBlock>
-                            <TextBlock Text="-" FontSize="24"></TextBlock>
-                            <TextBlock Text="{Binding Date.Month}" FontSize="24"></TextBlock>
-                            <TextBlock Text="-" FontSize="24"></TextBlock>
-                            <TextBlock Text="{Binding Date.Year}" FontSize="24"></TextBlock>
+                            <TextBlock FontSize="24" Text="Lokake:" />
+                            <TextBlock FontSize="24" Text="{Binding RoomName}" />
+                            <TextBlock FontSize="24" Text="  Dato: " />
+                            <TextBlock FontSize="24" Text="{Binding Date.Day}" />
+                            <TextBlock FontSize="24" Text="-" />
+                            <TextBlock FontSize="24" Text="{Binding Date.Month}" />
+                            <TextBlock FontSize="24" Text="-" />
+                            <TextBlock FontSize="24" Text="{Binding Date.Year}" />
                         </StackPanel>
                     </ListViewItem>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
-        <Button Content="Refresh" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold">
+        <Button
+            Grid.Row="6"
+            Grid.Column="0"
+            Width="100"
+            Height="50"
+            HorizontalAlignment="Center"
+            Content="Refresh"
+            FontSize="22"
+            FontWeight="Bold">
             <interactivity:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Click">
-                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.MyBookingsPage"></core:NavigateToPageAction>
+                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.MyBookingsPage" />
                 </core:EventTriggerBehavior>
             </interactivity:Interaction.Behaviors>
         </Button>
 
-        <Button Content="Home" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold">
+        <Button
+            Grid.Row="6"
+            Grid.Column="1"
+            Width="100"
+            Height="50"
+            HorizontalAlignment="Center"
+            Content="Home"
+            FontSize="22"
+            FontWeight="Bold">
             <interactivity:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Click">
-                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.Home"></core:NavigateToPageAction>
+                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.Home" />
                 </core:EventTriggerBehavior>
             </interactivity:Interaction.Behaviors>
         </Button>
 
-        <Button Content="Slet" Command="{Binding DeleteBookingCommand}" Grid.Row="6" Grid.Column="2" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold">
+        <Button
+            Grid.Row="6"
+            Grid.Column="2"
+            Width="100"
+            Height="50"
+            HorizontalAlignment="Center"
+            Command="{Binding DeleteBookingCommand}"
+            Content="Slet"
+            FontSize="22"
+            FontWeight="Bold">
             <interactivity:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Click">
-                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.MyBookingsPage"></core:NavigateToPageAction>
+                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.MyBookingsPage" />
                 </core:EventTriggerBehavior>
             </interactivity:Interaction.Behaviors>
         </Button>
