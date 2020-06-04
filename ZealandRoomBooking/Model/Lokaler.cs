@@ -50,6 +50,11 @@ namespace ZealandRoomBooking.Model
 
         }
 
+        public UserViewModel RefUserViewModel { get; set; }
+        public void UpdateColorDageFrem()
+        {
+            RefUserViewModel.DayForward();
+        }
 
         private static readonly ObservableCollection<LokaleBookinger> _alleLokaleBookingers = new ObservableCollection<LokaleBookinger>();
         private static readonly ObservableCollection<Bookinger> _alleBookingers = new ObservableCollection<Bookinger>();
