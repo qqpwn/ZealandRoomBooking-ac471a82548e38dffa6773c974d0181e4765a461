@@ -34,9 +34,8 @@ namespace ZealandRoomBooking.Model
         public string Bygning { get; set; }
 
 
-        public string XamlNavn => "Lokale: " + Navn + ", Bygning: " + Bygning + ", Etage: " + Etage + ", Type: " + Type;
-        public string XamlSortBygningNavn => "Bygning: " + Bygning + ", Lokale: " + Navn + ", Etage: " + Etage + ", Type: " + Type;
-        public string XamlSortEtageNavn => "Etage: " + Etage + ", Bygning" + Bygning + ", Lokale: " + Navn + ", Type: " + Type;
+        public string XamlNavnOgType => "Lokale: " + Navn + ", Type: " + Type;
+        public string XamlSortBygningNavnOgEtage => "Bygning: " + Bygning + ", Etage: " + Etage;
 
 
         public Lokaler(int etage, string type, string navn, string bygning)

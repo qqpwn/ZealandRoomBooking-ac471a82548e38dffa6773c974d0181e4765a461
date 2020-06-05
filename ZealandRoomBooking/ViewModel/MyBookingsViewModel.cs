@@ -13,12 +13,15 @@ using System.ServiceModel.Channels;
 using Windows.UI.Popups;
 using ZealandRoomBooking.View;
 using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using ZealandRoomBooking.Annotations;
 
 namespace ZealandRoomBooking.ViewModel
 {
-    class MyBookingsViewModel
+    class MyBookingsViewModel : INotifyPropertyChanged
     {
         public string RoomName { get; set; }
         private ObservableCollection<Bookinger> _myBookingsList = new ObservableCollection<Bookinger>();
@@ -113,9 +116,20 @@ namespace ZealandRoomBooking.ViewModel
                 {
                     PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
                     PersistencyService<Bookinger>.DeleteObject(MyBookingsList[SelectedBooking].BookingId, "Bookinger");
-                    ((Frame)Window.Current.Content).Navigate(typeof(View.MyBookingsPage));
+                    MyBookingsList.Remove(MyBookingsList[SelectedBooking]);
+                    OnPropertyChanged(nameof(MyBookingsList));
                 }
             }
         }
+
+        #region PropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        } 
+        #endregion
     }
 }

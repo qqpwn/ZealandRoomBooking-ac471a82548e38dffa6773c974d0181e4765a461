@@ -412,7 +412,7 @@ namespace ZealandRoomBooking.ViewModel
                     {
                         BookingCheckLærer();
                     }
-                    else if (RefUser.CheckedUser.Usertype == "Lære" && selectedRoom.BookingStatus >= 0)
+                    else if (RefUser.CheckedUser.Usertype == "Lære" && selectedRoom.BookingStatus > 0 && BookingDate.Date < DateTime.Now.AddDays(3).Date)
                     {
                         var messageDialog = new MessageDialog("Dette lokale er allerede booket. Book et andet lokale, som er ledigt.");
                         messageDialog.Commands.Add(new UICommand("Ok", null));
@@ -422,11 +422,17 @@ namespace ZealandRoomBooking.ViewModel
                     {
                         if (BookingDate.Date >= DateTime.Now.AddDays(3).Date && selectedRoom.BookingStatus <= 2 && RefUser.CheckedUser.Usertype == "Lære")
                         {
-                            var messageDialog = new MessageDialog("Er du sikker på at du vil overskrive elevens booking?");
+                            var messageDialog = new MessageDialog("Er du sikker på at du vil overskrive den studerendes booking?");
 
                             messageDialog.Commands.Add(new UICommand("Ja", new UICommandInvokedHandler(this.CommandInvokedHandler)));
                             messageDialog.Commands.Add(new UICommand("Nej", null));
 
+                            await messageDialog.ShowAsync();
+                        }
+                        else if (selectedRoom.BookingStatus == 3)
+                        {
+                            var messageDialog = new MessageDialog("Lokalet er optaget");
+                            messageDialog.Commands.Add(new UICommand("Ok", null));
                             await messageDialog.ShowAsync();
                         }
                     }
@@ -440,7 +446,7 @@ namespace ZealandRoomBooking.ViewModel
                     {
                         BookingCheckElev();
                     }
-                    else if (RefUser.CheckedUser.Usertype == "Elev" && selectedRoom.BookingStatus >= 2)
+                    else if (RefUser.CheckedUser.Usertype == "Elev" && selectedRoom.BookingStatus >= 1)
                     {
                         var messageDialog = new MessageDialog("Dette lokale er allerede booket. Book et andet lokale, som er ledigt.");
                         messageDialog.Commands.Add(new UICommand("Ok", null));
@@ -452,7 +458,7 @@ namespace ZealandRoomBooking.ViewModel
                         {
                             BookingCheckLærer();
                         }
-                        else if (RefUser.CheckedUser.Usertype == "Lære" && selectedRoom.BookingStatus >= 0)
+                        else if (RefUser.CheckedUser.Usertype == "Lære" && selectedRoom.BookingStatus > 0 && BookingDate.Date < DateTime.Now.AddDays(3).Date)
                         {
                             var messageDialog = new MessageDialog("Dette lokale er allerede booket. Book et andet lokale, som er ledigt.");
                             messageDialog.Commands.Add(new UICommand("Ok", null));
@@ -462,11 +468,17 @@ namespace ZealandRoomBooking.ViewModel
                         {
                             if (BookingDate.Date >= DateTime.Now.AddDays(3).Date && selectedRoom.BookingStatus <= 2 && RefUser.CheckedUser.Usertype == "Lære")
                             {
-                                var messageDialog = new MessageDialog("Er du sikker på at du vil overskrive elevens booking?");
+                                var messageDialog = new MessageDialog("Er du sikker på at du vil overskrive den studerendes booking?");
 
                                 messageDialog.Commands.Add(new UICommand("Ja", new UICommandInvokedHandler(this.CommandInvokedHandler)));
                                 messageDialog.Commands.Add(new UICommand("Nej", null));
 
+                                await messageDialog.ShowAsync();
+                            }
+                            else if (selectedRoom.BookingStatus == 3)
+                            {
+                                var messageDialog = new MessageDialog("Lokalet er optaget");
+                                messageDialog.Commands.Add(new UICommand("Ok", null));
                                 await messageDialog.ShowAsync();
                             }
                         }
