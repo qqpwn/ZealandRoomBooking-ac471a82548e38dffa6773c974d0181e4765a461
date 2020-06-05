@@ -113,20 +113,15 @@
             Grid.Column="0"
             Grid.ColumnSpan="3"
             Margin="35,0,35,0"
+            BorderThickness="3"
+            BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
             ItemsSource="{Binding ListOfRooms, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectedIndex="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ListViewItem Background="{Binding Color, UpdateSourceTrigger=PropertyChanged}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Lokale:  " />
-                            <TextBlock Text="{Binding Navn}" />
-                            <TextBlock Text=", Etage:  " />
-                            <TextBlock Text="{Binding Etage}" />
-                            <TextBlock Text=", Bygning:  " />
-                            <TextBlock Text="{Binding Bygning}" />
-                            <TextBlock Text=", Type:  " />
-                            <TextBlock Text="{Binding Type}" />
+                            <TextBlock Text="{Binding XamlNavn}" />
                         </StackPanel>
                     </ListViewItem>
                 </DataTemplate>
