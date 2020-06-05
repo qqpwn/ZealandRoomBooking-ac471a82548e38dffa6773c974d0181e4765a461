@@ -54,9 +54,9 @@ namespace ZealandRoomBooking.ViewModel
         public int SortByAvailability { get; set; } = 0;
         public int SortByBuilding { get; set; } = 0;
         public int SortByFloor { get; set; } = 0;
-        public SolidColorBrush AvailabilitySwitchColor { get; set; } = new SolidColorBrush(Colors.LightGray);
-        public SolidColorBrush BuildingSwitchColor { get; set; } = new SolidColorBrush(Colors.LightGray);
-        public SolidColorBrush FloorSwitchColor { get; set; } = new SolidColorBrush(Colors.LightGray);
+        public string AvailabilitySwitchColor { get; set; } = "#fff387";
+        public string BuildingSwitchColor { get; set; } = "#fff387";
+        public string FloorSwitchColor { get; set; } = "#fff387";
         #endregion
 
         #region DateBarString
@@ -88,8 +88,6 @@ namespace ZealandRoomBooking.ViewModel
         }
         #endregion
 
-
-
         #region BookingDateMethods
         //Sætter datobaren en dag frem / tilbage 
         public async void DayForward()
@@ -104,10 +102,12 @@ namespace ZealandRoomBooking.ViewModel
                 {
                     SortByAvailabilitySwitch();
                 }
+
                 if (SortByBuilding == 1)
                 {
                     SortByBuildingSwitch();
                 }
+            }
             else
             {
                 var messageDialog = new MessageDialog("Du kan kun booke et lokale op til 30 dage frem.");
@@ -129,9 +129,11 @@ namespace ZealandRoomBooking.ViewModel
                 {
                     SortByAvailabilitySwitch();
                 }
+
                 if (SortByBuilding == 1)
                 {
                     SortByBuildingSwitch();
+                }
             }
             else
             {
@@ -163,13 +165,13 @@ namespace ZealandRoomBooking.ViewModel
             if (SortByAvailability == 0)
             {
                 SortByAvailability++;
-                AvailabilitySwitchColor = new SolidColorBrush(Colors.ForestGreen);
+                AvailabilitySwitchColor = $"{Colors.Green}";
                 OnPropertyChanged(nameof(AvailabilitySwitchColor));
             }
             else
             {
                 SortByAvailability--;
-                AvailabilitySwitchColor = new SolidColorBrush(Colors.LightGray);
+                AvailabilitySwitchColor = "#fff387";
                 OnPropertyChanged(nameof(AvailabilitySwitchColor));
             }
             SortRoomList();
@@ -181,13 +183,13 @@ namespace ZealandRoomBooking.ViewModel
             if (SortByBuilding == 0)
             {
                 SortByBuilding++;
-                BuildingSwitchColor = new SolidColorBrush(Colors.ForestGreen);
+                BuildingSwitchColor = $"{Colors.Green}";
                 OnPropertyChanged(nameof(BuildingSwitchColor));
             }
             else
             {
                 SortByBuilding--;
-                BuildingSwitchColor = new SolidColorBrush(Colors.LightGray);
+                BuildingSwitchColor = "#fff387";
                 OnPropertyChanged(nameof(BuildingSwitchColor));
             }
             SortRoomList();
@@ -199,13 +201,13 @@ namespace ZealandRoomBooking.ViewModel
             if (SortByFloor == 0)
             {
                 SortByFloor++;
-                FloorSwitchColor = new SolidColorBrush(Colors.ForestGreen);
+                FloorSwitchColor = $"{Colors.Green}";
                 OnPropertyChanged(nameof(FloorSwitchColor));
             }
             else
             {
                 SortByFloor--;
-                FloorSwitchColor = new SolidColorBrush(Colors.LightGray);
+                FloorSwitchColor = "#fff387";
                 OnPropertyChanged(nameof(FloorSwitchColor));
             }
             SortRoomList();
