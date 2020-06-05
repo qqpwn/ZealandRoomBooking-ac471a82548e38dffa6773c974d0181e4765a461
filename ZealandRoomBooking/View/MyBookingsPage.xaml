@@ -115,11 +115,7 @@
             Content="Slet"
             FontSize="22"
             FontWeight="Bold">
-            <interactivity:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="Click">
-                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.MyBookingsPage" />
-                </core:EventTriggerBehavior>
-            </interactivity:Interaction.Behaviors>
+            
         </Button>
     </Grid>
 </Page>

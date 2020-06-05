@@ -11,6 +11,10 @@ using ZealandRoomBooking.Model;
 using ZealandRoomBooking.Persistency;
 using System.ServiceModel.Channels;
 using Windows.UI.Popups;
+using ZealandRoomBooking.View;
+using System.Collections.Specialized;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace ZealandRoomBooking.ViewModel
 {
@@ -27,6 +31,7 @@ namespace ZealandRoomBooking.ViewModel
         public ObservableCollection<Lokaler> AllRooms = new ObservableCollection<Lokaler>();
         public int SelectedBooking { get; set; }
         User refUser = new User();
+                
         public ICommand DeleteBookingCommand { get; set; }
 
         public MyBookingsViewModel()
@@ -76,7 +81,7 @@ namespace ZealandRoomBooking.ViewModel
                 }
             }
         }
-        
+
         ////Delete booking
         public async void DeleteBooking()
         {
@@ -108,9 +113,8 @@ namespace ZealandRoomBooking.ViewModel
                 {
                     PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
                     PersistencyService<Bookinger>.DeleteObject(MyBookingsList[SelectedBooking].BookingId, "Bookinger");
-                    break;
+                    ((Frame)Window.Current.Content).Navigate(typeof(View.MyBookingsPage));
                 }
-
             }
         }
     }

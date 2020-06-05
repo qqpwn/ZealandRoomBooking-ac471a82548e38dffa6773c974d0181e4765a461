@@ -117,16 +117,24 @@
             SelectedIndex="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ListViewItem Background="{Binding Color, UpdateSourceTrigger=PropertyChanged}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Lokale:  " />
-                            <TextBlock Text="{Binding Navn}" />
-                            <TextBlock Text=", Etage:  " />
-                            <TextBlock Text="{Binding Etage}" />
-                            <TextBlock Text=", Bygning:  " />
-                            <TextBlock Text="{Binding Bygning}" />
-                            <TextBlock Text=", Type:  " />
-                            <TextBlock Text="{Binding Type}" />
+                    <ListViewItem Background="{Binding Color, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,0,0">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Lokale:  " />
+                                <TextBlock Text="{Binding Navn}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Etage:  " />
+                                <TextBlock Text="{Binding Etage}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Bygning:  " />
+                                <TextBlock Text="{Binding Bygning}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Type:  " />
+                                <TextBlock Text="{Binding Type}" />
+                            </StackPanel>
                         </StackPanel>
                     </ListViewItem>
                 </DataTemplate>
