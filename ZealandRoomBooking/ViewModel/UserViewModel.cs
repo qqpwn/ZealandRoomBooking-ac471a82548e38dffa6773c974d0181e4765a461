@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.ApplicationModel.Appointments.DataProvider;
 using Windows.ApplicationModel.Store.Preview.InstallControl;
 using Windows.Media.Miracast;
 using Windows.UI;
@@ -32,31 +34,29 @@ namespace ZealandRoomBooking.ViewModel
         public string Navn { get; set; }
         public string Bygning { get; set; }
 
-        private static ObservableCollection<Bookinger> _listOfBookinger = new ObservableCollection<Bookinger>();
-        private static ObservableCollection<LokaleBookinger> _listOfLokaleBookinger = new ObservableCollection<LokaleBookinger>();
         private string _dateBarString;
 
-        public static ObservableCollection<Lokaler> ListOfRooms { get; private set; } = new ObservableCollection<Lokaler>();
+        public static ObservableCollection<Lokaler> ListOfRooms { get; set; } = new ObservableCollection<Lokaler>();
+        public static ObservableCollection<Bookinger> ListOfBookinger { get; set; } = new ObservableCollection<Bookinger>();
+        public static ObservableCollection<LokaleBookinger> ListOfLokaleBookinger { get; set; } = new ObservableCollection<LokaleBookinger>();
 
-
-        public static ObservableCollection<Bookinger> ListOfBookinger
-        {
-            get { return _listOfBookinger; }
-        }
-
-        public static ObservableCollection<LokaleBookinger> ListOfLokaleBookinger
-        {
-            get { return _listOfLokaleBookinger; }
-        }
-
-        public Lokaler RefLokaler { get; set; }
+        public Lokaler RefLokaler = new Lokaler();
         public static User RefUser = new User();
         public int SelectedRoom { get; set; }
         public ICommand BookRoomCommand { get; set; }
         public ICommand DayForwardCommand { get; set; }
         public ICommand DayBackwardsCommand { get; set; }
+        public ICommand SortAvailabilitySwitchCommand { get; set; }
+        public ICommand SortBuildingSwitchCommand { get; set; }
+        public ICommand SortFloorSwitchCommand { get; set; }
         public static DateTime BookingDate { get; set; } = DateTime.Now;
         public static int DaysAdded { get; set; } = 0;
+        public int SortByAvailability { get; set; } = 0;
+        public int SortByBuilding { get; set; } = 0;
+        public int SortByFloor { get; set; } = 0;
+        public SolidColorBrush AvailabilitySwitchColor { get; set; } = new SolidColorBrush(Colors.LightGray);
+        public SolidColorBrush BuildingSwitchColor { get; set; } = new SolidColorBrush(Colors.LightGray);
+        public SolidColorBrush FloorSwitchColor { get; set; } = new SolidColorBrush(Colors.LightGray);
         #endregion
 
         #region DateBarString
@@ -74,13 +74,16 @@ namespace ZealandRoomBooking.ViewModel
         #region Constructor
         public UserViewModel()
         {
-            HentLokaler();
             HentAlleBookinger();
+            SortRoomList();
+            SetRoomStatus();
             DateToString();
             BookRoomCommand = new RelayCommand(BookRoom);
             DayForwardCommand = new RelayCommand(DayForward);
             DayBackwardsCommand = new RelayCommand(DayBackwards);
-            RefLokaler = new Lokaler();
+            SortAvailabilitySwitchCommand = new RelayCommand(SortByAvailabilitySwitch);
+            SortBuildingSwitchCommand = new RelayCommand(SortByBuildingSwitch);
+            SortFloorSwitchCommand = new RelayCommand(SortByFloorSwitch);
             RefLokaler.AddtilList();
         }
         #endregion
@@ -96,7 +99,15 @@ namespace ZealandRoomBooking.ViewModel
                 BookingDate = BookingDate.AddDays(1);
                 DaysAdded++;
                 SetRoomStatus();
-            }
+
+                if (SortByAvailability == 1)
+                {
+                    SortByAvailabilitySwitch();
+                }
+                if (SortByBuilding == 1)
+                {
+                    SortByBuildingSwitch();
+                }
             else
             {
                 var messageDialog = new MessageDialog("Du kan kun booke et lokale op til 30 dage frem.");
@@ -113,6 +124,14 @@ namespace ZealandRoomBooking.ViewModel
                 BookingDate = BookingDate.AddDays(-1);
                 DaysAdded--;
                 SetRoomStatus();
+
+                if (SortByAvailability == 1)
+                {
+                    SortByAvailabilitySwitch();
+                }
+                if (SortByBuilding == 1)
+                {
+                    SortByBuildingSwitch();
             }
             else
             {
@@ -120,6 +139,7 @@ namespace ZealandRoomBooking.ViewModel
                 messageDialog.Commands.Add(new UICommand("Ok", null));
                 await messageDialog.ShowAsync();
             }
+  
             DateToString();
         }
 
@@ -131,23 +151,187 @@ namespace ZealandRoomBooking.ViewModel
 
         #region GetCollectionsMethod
 
-
-        public async void HentAlleBookinger()
+        public void HentAlleBookinger()
         {
-            ObservableCollection<Bookinger> tempBCollection = await PersistencyService<Bookinger>.GetObjects("Bookinger");
-            _listOfBookinger = tempBCollection;
-
-            ObservableCollection<LokaleBookinger> tempLBCollection = await PersistencyService<LokaleBookinger>.GetObjects("LokaleBookinger");
-            _listOfLokaleBookinger = tempLBCollection;
-            SetRoomStatus();
-        }
-
-        public async void HentLokaler()
-        {
-            ObservableCollection<Lokaler> tempLCollection = await PersistencyService<Lokaler>.GetObjects("Lokaler");
-            ListOfRooms = tempLCollection;
+            ListOfBookinger = HomeViewModel.BookingerCollection;
+            ListOfLokaleBookinger = HomeViewModel.LokaleBookingerCollection;
         }
         #endregion
+
+        public void SortByAvailabilitySwitch()
+        {
+            if (SortByAvailability == 0)
+            {
+                SortByAvailability++;
+                AvailabilitySwitchColor = new SolidColorBrush(Colors.ForestGreen);
+                OnPropertyChanged(nameof(AvailabilitySwitchColor));
+            }
+            else
+            {
+                SortByAvailability--;
+                AvailabilitySwitchColor = new SolidColorBrush(Colors.LightGray);
+                OnPropertyChanged(nameof(AvailabilitySwitchColor));
+            }
+            SortRoomList();
+            var userViewModel = new UserViewModel();
+        }
+
+        public void SortByBuildingSwitch()
+        {
+            if (SortByBuilding == 0)
+            {
+                SortByBuilding++;
+                BuildingSwitchColor = new SolidColorBrush(Colors.ForestGreen);
+                OnPropertyChanged(nameof(BuildingSwitchColor));
+            }
+            else
+            {
+                SortByBuilding--;
+                BuildingSwitchColor = new SolidColorBrush(Colors.LightGray);
+                OnPropertyChanged(nameof(BuildingSwitchColor));
+            }
+            SortRoomList();
+            var userViewModel = new UserViewModel();
+        }
+
+        public void SortByFloorSwitch()
+        {
+            if (SortByFloor == 0)
+            {
+                SortByFloor++;
+                FloorSwitchColor = new SolidColorBrush(Colors.ForestGreen);
+                OnPropertyChanged(nameof(FloorSwitchColor));
+            }
+            else
+            {
+                SortByFloor--;
+                FloorSwitchColor = new SolidColorBrush(Colors.LightGray);
+                OnPropertyChanged(nameof(FloorSwitchColor));
+            }
+            SortRoomList();
+            var userViewModel = new UserViewModel();
+        }
+
+        public void SortRoomList()
+        {
+            if (SortByAvailability == 1)
+            {
+                var tempAvailableCollection = new ObservableCollection<Lokaler>();
+                if (RefUser.CheckedUser.Usertype == "Elev")
+                {
+                    foreach (var room in HomeViewModel.LokaleCollection)
+                    {
+                        if (room.Type == "Klasselokale" && room.BookingStatus <= 1)
+                        {
+                            tempAvailableCollection.Add(room);
+                        }
+                        else
+                        {
+                            if (room.Type == "Møderum" && room.BookingStatus == 0)
+                            {
+                                tempAvailableCollection.Add(room);
+                            }
+                        }
+                    }
+                }
+                else if (RefUser.CheckedUser.Usertype == "Lære")
+                {
+                    foreach (var room in HomeViewModel.LokaleCollection)
+                    {
+                        if (BookingDate.Date <= DateTime.Now.AddDays(2).Date && room.BookingStatus == 0)
+                        {
+                            tempAvailableCollection.Add(room);
+                        }
+                        else if (BookingDate.Date >= DateTime.Now.AddDays(3).Date && room.BookingStatus <= 2)
+                        {
+                            tempAvailableCollection.Add(room);
+                        }
+                    }
+                }
+
+                if (SortByFloor == 1)
+                {
+                    var tempFloorCollection = new ObservableCollection<Lokaler>();
+                    List<Lokaler> tempSortedFloorList = tempAvailableCollection.OrderBy(o => o.Etage).ToList();
+                    foreach (var room in tempSortedFloorList)
+                    {
+                        tempFloorCollection.Add(room);
+                    }
+
+                    if (SortByBuilding == 1)
+                    {
+                        var tempBuildingCollection = new ObservableCollection<Lokaler>();
+                        List<Lokaler> tempSortedBuildingList = tempFloorCollection.OrderBy(o => o.Bygning).ToList();
+                        foreach (var room in tempSortedBuildingList)
+                        {
+                            tempBuildingCollection.Add(room);
+                        }
+
+                        ListOfRooms = tempBuildingCollection;
+                    }
+                    else
+                    {
+                        ListOfRooms = tempFloorCollection;
+                    }
+                }
+                else if (SortByBuilding == 1)
+                {
+                    var tempBuildingCollection = new ObservableCollection<Lokaler>();
+                    List<Lokaler> tempSortedBuildingList = tempAvailableCollection.OrderBy(o => o.Bygning).ToList();
+                    foreach (var room in tempSortedBuildingList)
+                    {
+                        tempBuildingCollection.Add(room);
+                    }
+
+                    ListOfRooms = tempBuildingCollection;
+                }
+                else
+                {
+                    ListOfRooms = tempAvailableCollection;
+                }
+            }
+            else if (SortByFloor == 1)
+            {
+                var tempFloorCollection = new ObservableCollection<Lokaler>();
+                List<Lokaler> tempSortedFloorList = HomeViewModel.LokaleCollection.OrderBy(o => o.Etage).ToList();
+                foreach (var room in tempSortedFloorList)
+                {
+                    tempFloorCollection.Add(room);
+                }
+
+                if (SortByBuilding == 1)
+                {
+                    var tempBuildingCollection = new ObservableCollection<Lokaler>();
+                    List<Lokaler> tempSortedBuildingList = tempFloorCollection.OrderBy(o => o.Bygning).ToList();
+                    foreach (var room in tempSortedBuildingList)
+                    {
+                        tempBuildingCollection.Add(room);
+                    }
+
+                    ListOfRooms = tempBuildingCollection;
+                }
+                else
+                {
+                    ListOfRooms = tempFloorCollection;
+                }
+            }
+            else if (SortByBuilding == 1)
+            {
+                var tempBuildingCollection = new ObservableCollection<Lokaler>();
+                List<Lokaler> tempSortedBuildingList = HomeViewModel.LokaleCollection.OrderBy(o => o.Bygning).ToList();
+                foreach (var room in tempSortedBuildingList)
+                {
+                    tempBuildingCollection.Add(room);
+                }
+
+                ListOfRooms = tempBuildingCollection;
+            }
+            else
+            {
+                ListOfRooms = HomeViewModel.LokaleCollection;
+            }
+            OnPropertyChanged(nameof(ListOfRooms));
+        }
 
         #region SetRoomStatusMethod
         //Sætter BookingStatus på hver lokale 
@@ -157,6 +341,7 @@ namespace ZealandRoomBooking.ViewModel
             foreach (var room in ListOfRooms)
             {
                 room.BookingStatus = 0;
+                RefLokaler.ColorCodes(room);
             }
             foreach (var booking in NoErrorsBookinger)
             {
@@ -174,11 +359,13 @@ namespace ZealandRoomBooking.ViewModel
                                     if (tempUser.Usertype == "Elev")
                                     {
                                         room.BookingStatus++;
+                                        RefLokaler.ColorCodes(room);
                                         break;
                                     }
-                                    else
+                                    else if (tempUser.Usertype == "Lære")
                                     {
                                         room.BookingStatus = room.BookingStatus + 3;
+                                        RefLokaler.ColorCodes(room);
                                         break;
                                     }
                                 }

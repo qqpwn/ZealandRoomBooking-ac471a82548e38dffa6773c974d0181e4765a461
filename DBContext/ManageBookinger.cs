@@ -11,7 +11,8 @@ namespace DBContext
     public class ManageBookinger : IManageBookinger
     {
 
-        public const string DBaddress = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Zealand;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        public const string DBaddress = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ZealandRoomBookingDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+
 
         public List<Bookinger> BookingList = new List<Bookinger>();
 
