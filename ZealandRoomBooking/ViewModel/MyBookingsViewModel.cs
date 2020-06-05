@@ -11,6 +11,10 @@ using ZealandRoomBooking.Model;
 using ZealandRoomBooking.Persistency;
 using System.ServiceModel.Channels;
 using Windows.UI.Popups;
+using ZealandRoomBooking.View;
+using System.Collections.Specialized;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace ZealandRoomBooking.ViewModel
 {
@@ -27,6 +31,7 @@ namespace ZealandRoomBooking.ViewModel
         public ObservableCollection<Lokaler> AllRooms = new ObservableCollection<Lokaler>();
         public int SelectedBooking { get; set; }
         User refUser = new User();
+                
         public ICommand DeleteBookingCommand { get; set; }
 
         public MyBookingsViewModel()
@@ -76,22 +81,8 @@ namespace ZealandRoomBooking.ViewModel
                 }
             }
         }
-        
-        ////Delete booking
-        //public void DeleteBooking()
-        //{
-            
-        //    foreach (var lokaleBooking in AllLokaleBookings)
-        //    {
-        //        if (lokaleBooking.BookingId == MyBookingsList[SelectedBooking].BookingId)
-        //        {
-        //            PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
-        //            PersistencyService<Bookinger>.DeleteObject(MyBookingsList[SelectedBooking].BookingId, "Bookinger");
-        //            break;
-        //        }
-        //    }
-        //}
 
+        ////Delete booking
         public async void DeleteBooking()
         {
             if (MyBookingsList.Count == 0)
@@ -105,19 +96,9 @@ namespace ZealandRoomBooking.ViewModel
             {
                 var messageDialog = new MessageDialog("Er du sikker på at du vil slette din valgte booking?");
 
-                // Add commands and set their callbacks; both buttons use the same callback function instead of inline event handlers
                 messageDialog.Commands.Add(new UICommand("Ja", new UICommandInvokedHandler(this.CommandInvokedHandler)));
                 messageDialog.Commands.Add(new UICommand("Nej", null));
 
-                // Sætter kommandoen som vil blive brugt som default
-                // Set the command that will be invoked by default
-                messageDialog.DefaultCommandIndex = 0;
-
-                // Sætter kommandoen som bliver brugt når escape er trykket på
-                // Set the command to be invoked when escape is pressed
-                messageDialog.CancelCommandIndex = 1;
-
-                // Viser message/besked dialogen
                 await messageDialog.ShowAsync();
             }
 
@@ -132,9 +113,8 @@ namespace ZealandRoomBooking.ViewModel
                 {
                     PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
                     PersistencyService<Bookinger>.DeleteObject(MyBookingsList[SelectedBooking].BookingId, "Bookinger");
-                    break;
+                    ((Frame)Window.Current.Content).Navigate(typeof(View.MyBookingsPage));
                 }
-
             }
         }
     }

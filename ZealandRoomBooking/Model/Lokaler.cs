@@ -19,7 +19,13 @@ namespace ZealandRoomBooking.Model
     public class Lokaler : INotifyPropertyChanged
     {
         //Default color for ListViewItem
-        private SolidColorBrush _color = new SolidColorBrush(Colors.Green);
+        private SolidColorBrush _color;
+
+        public SolidColorBrush Color
+        {
+            get { return _color; }
+            set { _color = value; OnPropertyChanged(nameof(Color)); }
+        }
         public int BookingStatus { get; set; } = 0;
         public int LokaleId { get; set; }
         public int Etage { get; set; }
@@ -27,20 +33,12 @@ namespace ZealandRoomBooking.Model
         public string Navn { get; set; }
         public string Bygning { get; set; }
 
+
         public string XamlNavn => "Lokale: " + Navn + ", Bygning: " + Bygning + ", Etage: " + Etage + ", Type: " + Type;
         public string XamlSortBygningNavn => "Bygning: " + Bygning + ", Lokale: " + Navn + ", Etage: " + Etage + ", Type: " + Type;
         public string XamlSortEtageNavn => "Etage: " + Etage + ", Bygning" + Bygning + ", Lokale: " + Navn + ", Type: " + Type;
 
-        public SolidColorBrush Color
-        {
-            get
-            {
-                //Methode som sætter ListViewItem Background color
-                return ColorCode(this);
-            }
-            set { _color = value; OnPropertyChanged(nameof(_color)); }
-        }
-        
+
         public Lokaler(int etage, string type, string navn, string bygning)
         {
             Etage = etage;
@@ -54,6 +52,11 @@ namespace ZealandRoomBooking.Model
 
         }
 
+        public UserViewModel RefUserViewModel { get; set; }
+        public void UpdateColorDageFrem()
+        {
+            RefUserViewModel.DayForward();
+        }
 
         private static readonly ObservableCollection<LokaleBookinger> _alleLokaleBookingers = new ObservableCollection<LokaleBookinger>();
         private static readonly ObservableCollection<Bookinger> _alleBookingers = new ObservableCollection<Bookinger>();
@@ -77,9 +80,9 @@ namespace ZealandRoomBooking.Model
         //Henter Listerne fra UserViewModel, så vi sikre på det de samme lister
         public void AddtilList()
         {
-            ObservableCollection<LokaleBookinger> test1 = UserViewModel.ListOfLokaleBookinger;
-            ObservableCollection<Bookinger> test2 = UserViewModel.ListOfBookinger;
-            ObservableCollection<Lokaler> test3 = UserViewModel.ListOfRooms;
+            ObservableCollection<LokaleBookinger> test1 = HomeViewModel.LokaleBookingerCollection;
+            ObservableCollection<Bookinger> test2 = HomeViewModel.BookingerCollection;
+            ObservableCollection<Lokaler> test3 = HomeViewModel.LokaleCollection;
             _alleLokaleBookingers.Clear();
             foreach (var o in test1)
             {
@@ -99,88 +102,61 @@ namespace ZealandRoomBooking.Model
             }
         }
 
-        //Methode som sætter ListViewItem Background color
-        public SolidColorBrush ColorCode(Lokaler a)
+        //Bruges til at sætte colors på lokaler
+        public void ColorCodes(Lokaler room)
         {
-            foreach (var b in _alleLokaler)
+            if (RefUser.CheckedUser.Usertype == "Elev")
             {
-                if (a.LokaleId == b.LokaleId)
+                if (room.Type == "Klasselokale" && room.BookingStatus <= 1)
                 {
-                    if (RefUser.CheckedUser.Usertype == "Elev")
-                    {
-
-                        if (a.Type == "Klasselokale" && b.BookingStatus <= 1)
-                        {
-                            a._color = new SolidColorBrush(Colors.Green);
-                            _color = a._color;
-                            OnPropertyChanged(nameof(_color));
-                            return _color;
-
-                        }
-                        else if (a.Type == "Klasselokale" && b.BookingStatus > 1)
-                        {
-                            a._color = new SolidColorBrush(Colors.Red);
-                            _color = a._color;
-                            OnPropertyChanged(nameof(_color));
-                            return _color;
-
-                        }
-                        else if (a.Type == "Møderum" && b.BookingStatus > 0)
-                        {
-                            a._color = new SolidColorBrush(Colors.Red);
-                            _color = a._color;
-                            OnPropertyChanged(nameof(_color));
-                            return _color;
-                        }
-                    }
-                    else if (RefUser.CheckedUser.Usertype == "Lære")
-                    {
-                        if (a.Type == "Klasselokale" && b.BookingStatus >= 1 && Dato.Date < DatoDageFrem.AddDays(3).Date)
-                        {
-                            a._color = new SolidColorBrush(Colors.Red);
-                            _color = a._color;
-                            OnPropertyChanged(nameof(_color));
-                            return _color;
-                        }
-                        else if (a.Type == "Klasselokale" && b.BookingStatus >= 1 && b.BookingStatus < 3 && DateTime.Today.Date <= DatoDageFrem.AddDays(3))
-                        {
-                            a._color = new SolidColorBrush(Colors.Yellow);
-                            _color = a._color;
-                            OnPropertyChanged(nameof(_color));
-                            return _color;
-                        }
-                        else if (a.Type == "Klasselokale" && b.BookingStatus > 2)
-                        {
-                            a._color = new SolidColorBrush(Colors.Red);
-                            _color = a._color;
-                            OnPropertyChanged(nameof(_color));
-                            return _color;
-                        }
-                        else if (a.Type == "Møderum" && b.BookingStatus > 0 && Dato.Date < DatoDageFrem.AddDays(3).Date)
-                        {
-                            a._color = new SolidColorBrush(Colors.Red);
-                            _color = a._color;
-                            OnPropertyChanged(nameof(_color));
-                            return _color;
-                        }
-                        else if (a.Type == "Møderum" && b.BookingStatus >= 1 && b.BookingStatus < 3 && DateTime.Today.Date <= DatoDageFrem.AddDays(3))
-                        {
-                            a._color = new SolidColorBrush(Colors.Yellow);
-                            _color = a._color;
-                            OnPropertyChanged(nameof(_color));
-                            return _color;
-                        }
-                       
-                    }
+                    room.Color = new SolidColorBrush(Colors.Green);
+                    Color = room.Color;
+                    OnPropertyChanged(nameof(Color));
+                }
+                else if (room.Type == "Klasselokale" && room.BookingStatus > 1)
+                {
+                    room.Color = new SolidColorBrush(Colors.Red);
+                    Color = room.Color;
+                    OnPropertyChanged(nameof(Color));
+                }
+                else if (room.Type == "Møderum" && room.BookingStatus == 0)
+                {
+                    room.Color = new SolidColorBrush(Colors.Green);
+                    Color = room.Color;
+                    OnPropertyChanged(nameof(Color));
+                }
+                else if (room.Type == "Møderum" && room.BookingStatus > 0)
+                {
+                    room.Color = new SolidColorBrush(Colors.Red);
+                    Color = room.Color;
+                    OnPropertyChanged(nameof(Color));
                 }
             }
+            else if (RefUser.CheckedUser.Usertype == "Lære")
+            {
+                if (room.BookingStatus == 0)
+                {
+                    room.Color = new SolidColorBrush(Colors.Green);
+                    Color = room.Color;
+                    OnPropertyChanged(nameof(Color));
+                }
 
-            return _color;
+                else if (UserViewModel.BookingDate.Date >= DateTime.Now.AddDays(3).Date && room.BookingStatus < 3)
+                {
+                    room.Color = new SolidColorBrush(Colors.Yellow);
+                    Color = room.Color;
+                    OnPropertyChanged(nameof(Color));
+                }
+
+                else
+                {
+                    room.Color = new SolidColorBrush(Colors.Red);
+                    Color = room.Color;
+                    OnPropertyChanged(nameof(Color));
+                }
+            }
         }
 
-
-        public DateTime Dato = UserViewModel.BookingDate;
-        public DateTime DatoDageFrem = DateTime.Today;
         public User RefUser = new User();
 
 
