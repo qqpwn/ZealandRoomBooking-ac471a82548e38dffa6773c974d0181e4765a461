@@ -30,16 +30,14 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-
         <StackPanel Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Center">
             <TextBlock Text="Mine Bookinger" Margin="0,10,0,0" TextAlignment="Center" FontSize="45" FontWeight="Bold"/>
-
             <ListView Name="ListViewMyBookings" BorderThickness="3" BorderBrush="Black" Background="White" Margin="0,10,0,0" Height="500" Width="380" ItemsSource="{Binding MyBookingsList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedBooking, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ListViewItem>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Lokake:" FontSize="24"></TextBlock>
+                                <TextBlock Text="Lokale:" FontSize="24"></TextBlock>
                                 <TextBlock Text="{Binding RoomName}" FontSize="24"></TextBlock>
                                 <TextBlock Text="  Dato: " FontSize="24"></TextBlock>
                                 <TextBlock Text="{Binding Date.Day}" FontSize="24"></TextBlock>
