@@ -67,15 +67,13 @@
             <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Vertical">
                 <TextBlock Text="Lokaler" FontSize="32" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,10"/>
 
-                <ListView Name="ListViewBookingSide" BorderBrush="Black" BorderThickness="1" Background="#fff387" Height="400" Width="380" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding ListOfRooms, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ListView Name="ListViewBookingSide" BorderBrush="Black" BorderThickness="2" Background="#fff387" Height="400" Width="380" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding ListOfRooms, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <ListViewItem Background="{Binding Color, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Black" BorderThickness="1">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Navn}"></TextBlock>
-                                    <TextBlock Text="{Binding Etage}"></TextBlock>
-                                    <TextBlock Text="{Binding Bygning}"></TextBlock>
-                                    <TextBlock Text="{Binding Type}"></TextBlock>
+                            <ListViewItem FontSize="20" Background="{Binding Color, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding XamlNavnOgType}" Margin="0,0,0,2"/>
+                                    <TextBlock Text="{Binding XamlSortBygningNavnOgEtage}" Margin="0,0,0,2"/>
                                 </StackPanel>
                             </ListViewItem>
                         </DataTemplate>
@@ -102,11 +100,6 @@
             </Button>
 
             <Button Content="Book" Background="#fff387" BorderBrush="#FF060404" Command="{Binding BookRoomCommand}" Height="50" Width="100" Margin="20,0,20,0" FontSize="22" FontWeight="Bold">
-                <interactivity:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="Click">
-                        <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.MyBookingsPage"></core:NavigateToPageAction>
-                    </core:EventTriggerBehavior>
-                </interactivity:Interaction.Behaviors>
             </Button>
         </StackPanel>
     </Grid>

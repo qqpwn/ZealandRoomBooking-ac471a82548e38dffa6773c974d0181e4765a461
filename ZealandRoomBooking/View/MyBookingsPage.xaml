@@ -70,11 +70,6 @@
             </Button>
 
             <Button Content="Slet" Background="#fff387" BorderBrush="#FF060404" Command="{Binding DeleteBookingCommand}" Height="50" Width="100" Margin="20,0,20,0" FontSize="22" FontWeight="Bold">
-                <interactivity:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="Click">
-                        <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.MyBookingsPage"></core:NavigateToPageAction>
-                    </core:EventTriggerBehavior>
-                </interactivity:Interaction.Behaviors>
             </Button>
         </StackPanel>
 
