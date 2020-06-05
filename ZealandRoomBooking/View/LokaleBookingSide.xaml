@@ -36,9 +36,7 @@
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Button FontFamily="Segoe MDL2 Assets" Content="&#xE72B;" Command="{Binding DayBackwardsCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="50" Width="70">
             </Button>
-
             <TextBlock Text="{Binding DateBarString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Height="50" Width="240" FontSize="32" FontWeight="Bold"/>
-
             <Button FontFamily="Segoe MDL2 Assets" Content="&#xE72A;" Command="{Binding DayForwardCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="50" Width="70">
             </Button>
         </StackPanel>
@@ -68,7 +66,8 @@
             </StackPanel>
             <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Vertical">
                 <TextBlock Text="Lokaler" FontSize="32" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,10"/>
-                <ListView Name="ListViewBookingSide" Height="400" Width="380" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding ListOfRooms, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ListView Name="ListViewBookingSide" Height="400" Width="380" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding ListOfRooms, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="3"
+            BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ListViewItem Background="{Binding Color, UpdateSourceTrigger=PropertyChanged}">
