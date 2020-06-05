@@ -2,71 +2,125 @@
     x:Class="ZealandRoomBooking.View.LokaleBookingSide"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ZealandRoomBooking.View"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:ZealandRoomBooking.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:ZealandRoomBooking.ViewModel"
-    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-   mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
     <Page.DataContext>
-        <viewModel:UserViewModel/>
+        <viewModel:UserViewModel />
     </Page.DataContext>
 
-    <Grid>
+    <Grid Background="#fff387">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="{Binding DateBarString, Mode=TwoWay}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Margin="110,20,110,20" TextAlignment="Center" VerticalAlignment="Center" FontSize="32" FontWeight="Bold"/>
-        <Button FontFamily="Segoe MDL2 Assets" Content="&#xE72B;" Command="{Binding DayBackwardsCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="50" Width="70" Margin="40,0,0,0">
-        </Button>
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Margin="110,20,110,20"
+            VerticalAlignment="Center"
+            FontSize="32"
+            FontWeight="Bold"
+            Text="{Binding DateBarString, Mode=TwoWay}"
+            TextAlignment="Center" />
+        <Button
+            Grid.Row="0"
+            Grid.RowSpan="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="1"
+            Width="70"
+            Height="50"
+            Margin="40,0,0,0"
+            Command="{Binding DayBackwardsCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Content="&#xE72B;"
+            FontFamily="Segoe MDL2 Assets" />
 
-        <Button FontFamily="Segoe MDL2 Assets" Content="&#xE72A;" Command="{Binding DayForwardCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Height="50" Width="70" Margin="35,0,0,0">
-        </Button>
+        <Button
+            Grid.Row="0"
+            Grid.RowSpan="1"
+            Grid.Column="2"
+            Grid.ColumnSpan="1"
+            Width="70"
+            Height="50"
+            Margin="35,0,0,0"
+            Command="{Binding DayForwardCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Content="&#xE72A;"
+            FontFamily="Segoe MDL2 Assets" />
+
 
         <Button Command="{Binding SortAvailabilitySwitchCommand}" Background="{Binding AvailabilityColor, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Height="50" Width="100" FontSize="12" FontWeight="Bold">
             <StackPanel>
-                <TextBlock Text="Sorter"></TextBlock>
-                <TextBlock Text="Ledighed"></TextBlock>
+                <TextBlock Text="Sorter" />
+                <TextBlock Text="Ledighed" />
             </StackPanel>
         </Button>
 
-        <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Height="50" Width="100" FontSize="12" FontWeight="Bold">
+        <Button
+            Grid.Row="1"
+            Grid.Column="1"
+            Width="100"
+            Height="50"
+            HorizontalAlignment="Center"
+            FontSize="12"
+            FontWeight="Bold">
             <StackPanel>
-                <TextBlock Text="Sorter"></TextBlock>
-                <TextBlock Text="Bygning"></TextBlock>
+                <TextBlock Text="Sorter" />
+                <TextBlock Text="Bygning" />
             </StackPanel>
         </Button>
 
-        <Button Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" Height="50" Width="100" FontSize="12" FontWeight="Bold">
+        <Button
+            Grid.Row="1"
+            Grid.Column="2"
+            Width="100"
+            Height="50"
+            HorizontalAlignment="Center"
+            FontSize="12"
+            FontWeight="Bold">
             <StackPanel>
-                <TextBlock Text="Sorter"></TextBlock>
-                <TextBlock Text="Etage"></TextBlock>
+                <TextBlock Text="Sorter" />
+                <TextBlock Text="Etage" />
             </StackPanel>
         </Button>
 
-        <ListView Name="ListViewBookingSide" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="3" Margin="35,0,35,0" ItemsSource="{Binding ListOfRooms, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <ListView
+            Name="ListViewBookingSide"
+            Grid.Row="3"
+            Grid.RowSpan="3"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Margin="35,0,35,0"
+            ItemsSource="{Binding ListOfRooms, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectedIndex="{Binding SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ListViewItem Background="{Binding Color, UpdateSourceTrigger=PropertyChanged}">
-                        <StackPanel>
-                            <TextBlock Text="{Binding Navn}"></TextBlock>
-                            <TextBlock Text="{Binding Etage}"></TextBlock>
-                            <TextBlock Text="{Binding Bygning}"></TextBlock>
-                            <TextBlock Text="{Binding Type}"></TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Lokale:  " />
+                            <TextBlock Text="{Binding Navn}" />
+                            <TextBlock Text=", Etage:  " />
+                            <TextBlock Text="{Binding Etage}" />
+                            <TextBlock Text=", Bygning:  " />
+                            <TextBlock Text="{Binding Bygning}" />
+                            <TextBlock Text=", Type:  " />
+                            <TextBlock Text="{Binding Type}" />
                         </StackPanel>
                     </ListViewItem>
                 </DataTemplate>
@@ -74,26 +128,49 @@
 
         </ListView>
 
-        <TextBlock Text="Lokaler" FontSize="20" FontWeight="Bold" TextAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3"/>
-        
-        <Button Content="Refresh" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold">
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            VerticalAlignment="Center"
+            FontSize="20"
+            FontWeight="Bold"
+            Text="Lokaler"
+            TextAlignment="Center" />
+
+        <Button
+            Grid.Row="6"
+            Grid.Column="0"
+            Width="100"
+            Height="50"
+            HorizontalAlignment="Center"
+            Content="Refresh"
+            FontSize="22"
+            FontWeight="Bold">
             <interactivity:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Click">
-                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.LokaleBookingSide"></core:NavigateToPageAction>
+                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.LokaleBookingSide" />
                 </core:EventTriggerBehavior>
             </interactivity:Interaction.Behaviors>
         </Button>
 
-        <Button Content="Home" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold">
+        <Button
+            Grid.Row="6"
+            Grid.Column="1"
+            Width="100"
+            Height="50"
+            HorizontalAlignment="Center"
+            Content="Home"
+            FontSize="22"
+            FontWeight="Bold">
             <interactivity:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Click">
-                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.Home"></core:NavigateToPageAction>
+                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.Home" />
                 </core:EventTriggerBehavior>
             </interactivity:Interaction.Behaviors>
         </Button>
 
         <Button Content="Book" Command="{Binding BookRoomCommand}" Grid.Row="6" Grid.Column="2" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold">
-            
         </Button>
 
     </Grid>

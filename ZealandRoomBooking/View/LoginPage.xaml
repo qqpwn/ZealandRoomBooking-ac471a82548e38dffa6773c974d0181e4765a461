@@ -14,7 +14,7 @@
         <viewModel:ViewModel></viewModel:ViewModel>
     </Page.DataContext>
 
-    <Grid>
+    <Grid Background="#fff387">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
