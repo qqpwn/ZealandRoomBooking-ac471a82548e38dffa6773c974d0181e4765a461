@@ -68,6 +68,8 @@
         </ListView>
 
         <Button
+            Background="#fff387"
+            BorderBrush="#FF060404"
             Grid.Row="6"
             Grid.Column="0"
             Width="100"
@@ -84,6 +86,8 @@
         </Button>
 
         <Button
+            Background="#fff387"
+            BorderBrush="#FF060404"
             Grid.Row="6"
             Grid.Column="1"
             Width="100"
@@ -100,6 +104,8 @@
         </Button>
 
         <Button
+            Background="#fff387"
+            BorderBrush="#FF060404"
             Grid.Row="6"
             Grid.Column="2"
             Width="100"
