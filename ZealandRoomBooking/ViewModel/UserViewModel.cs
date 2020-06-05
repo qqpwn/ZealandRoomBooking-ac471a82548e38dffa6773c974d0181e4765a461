@@ -96,8 +96,6 @@ namespace ZealandRoomBooking.ViewModel
                 BookingDate = BookingDate.AddDays(1);
                 DaysAdded++;
                 SetRoomStatus();
-                new UserViewModel();
-
             }
             else
             {
@@ -115,7 +113,6 @@ namespace ZealandRoomBooking.ViewModel
                 BookingDate = BookingDate.AddDays(-1);
                 DaysAdded--;
                 SetRoomStatus();
-                new UserViewModel();
             }
             else
             {
@@ -152,7 +149,6 @@ namespace ZealandRoomBooking.ViewModel
         }
         #endregion
 
-       
         #region SetRoomStatusMethod
         //Sætter BookingStatus på hver lokale 
         public async void SetRoomStatus()
