@@ -37,6 +37,7 @@
             TextWrapping="Wrap" />
 
         <Button
+            Background="LightGray"
             Grid.Row="5"
             Grid.Column="0"
             Width="100"
@@ -46,6 +47,7 @@
             FontSize="22"
             FontWeight="Bold" />
         <Button
+            Background="LightGray"
             Grid.Row="5"
             Grid.Column="1"
             Width="100"
@@ -55,6 +57,7 @@
             FontSize="22"
             FontWeight="Bold" />
         <Button
+            Background="LightGray"
             Grid.Row="5"
             Grid.Column="2"
             Width="100"
