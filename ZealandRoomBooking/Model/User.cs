@@ -13,6 +13,7 @@ using Microsoft.Xaml.Interactions.Core;
 using ZealandRoomBooking.Annotations;
 using ZealandRoomBooking.Persistency;
 using ZealandRoomBooking.View;
+using Windows.UI.Popups;
 
 namespace ZealandRoomBooking.Model
 {
@@ -72,8 +73,10 @@ namespace ZealandRoomBooking.Model
             }
             else
             {
-                LoginInt = 0;
-                
+                var messageDialog = new MessageDialog("Dit brugernavn eller password er ugyldigt.");
+                messageDialog.Commands.Add(new UICommand("Ok", null));
+                await messageDialog.ShowAsync();
+
             }
 
         }

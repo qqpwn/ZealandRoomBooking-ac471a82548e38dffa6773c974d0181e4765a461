@@ -13,6 +13,7 @@ namespace DBContext
 
         public const string DBaddress = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ZealandRoomBookingDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
+
         public List<Bookinger> BookingList = new List<Bookinger>();
 
         public List<Bookinger> GetAllBookinger()

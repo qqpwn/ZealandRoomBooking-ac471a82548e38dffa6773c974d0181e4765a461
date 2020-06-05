@@ -10,8 +10,8 @@ namespace DBContext
 {
     public class ManageBookingSmartboard : IManageBookingSmartboard
     {
-        public const string DBaddress =
-            "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ZealandRoomBookingDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        public const string DBaddress = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ZealandRoomBookingDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+
         public List<BookingSmartboard> BookingSmartboardList = new List<BookingSmartboard>();
 
         public List<BookingSmartboard> GetAllBookingSmartboard()

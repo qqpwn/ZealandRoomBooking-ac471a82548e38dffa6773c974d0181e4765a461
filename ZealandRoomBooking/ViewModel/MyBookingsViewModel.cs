@@ -9,6 +9,12 @@ using Windows.ApplicationModel.Store.Preview.InstallControl;
 using Eventmaker.Common;
 using ZealandRoomBooking.Model;
 using ZealandRoomBooking.Persistency;
+using System.ServiceModel.Channels;
+using Windows.UI.Popups;
+using ZealandRoomBooking.View;
+using System.Collections.Specialized;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace ZealandRoomBooking.ViewModel
 {
@@ -25,6 +31,7 @@ namespace ZealandRoomBooking.ViewModel
         public ObservableCollection<Lokaler> AllRooms = new ObservableCollection<Lokaler>();
         public int SelectedBooking { get; set; }
         User refUser = new User();
+                
         public ICommand DeleteBookingCommand { get; set; }
 
         public MyBookingsViewModel()
@@ -75,8 +82,30 @@ namespace ZealandRoomBooking.ViewModel
             }
         }
 
-        //Delete booking
-        public void DeleteBooking()
+        ////Delete booking
+        public async void DeleteBooking()
+        {
+            if (MyBookingsList.Count == 0)
+            {
+                var messageDialog = new MessageDialog("Du har ingen bookinger");
+                messageDialog.Commands.Add(new UICommand("OK", null));
+                await messageDialog.ShowAsync();
+
+            }
+            else if (MyBookingsList.Count > 0)
+            {
+                var messageDialog = new MessageDialog("Er du sikker på at du vil slette din valgte booking?");
+
+                messageDialog.Commands.Add(new UICommand("Ja", new UICommandInvokedHandler(this.CommandInvokedHandler)));
+                messageDialog.Commands.Add(new UICommand("Nej", null));
+
+                await messageDialog.ShowAsync();
+            }
+
+
+        }
+
+        private void CommandInvokedHandler(IUICommand command)
         {
             foreach (var lokaleBooking in AllLokaleBookings)
             {
@@ -84,7 +113,7 @@ namespace ZealandRoomBooking.ViewModel
                 {
                     PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
                     PersistencyService<Bookinger>.DeleteObject(MyBookingsList[SelectedBooking].BookingId, "Bookinger");
-                    break;
+                    ((Frame)Window.Current.Content).Navigate(typeof(View.MyBookingsPage));
                 }
             }
         }

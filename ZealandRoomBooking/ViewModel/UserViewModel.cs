@@ -20,6 +20,8 @@ using ZealandRoomBooking.Annotations;
 using ZealandRoomBooking.Model;
 using ZealandRoomBooking.Persistency;
 using ZealandRoomBooking.View;
+using System.Linq.Expressions;
+using Windows.UI.Popups;
 
 namespace ZealandRoomBooking.ViewModel
 {
@@ -86,15 +88,18 @@ namespace ZealandRoomBooking.ViewModel
         }
         #endregion
 
+
+
         #region BookingDateMethods
         //Sætter datobaren en dag frem / tilbage 
-        public void DayForward()
+        public async void DayForward()
         {
             if (DaysAdded < 30)
             {
                 BookingDate = BookingDate.AddDays(1);
                 DaysAdded++;
                 SetRoomStatus();
+
                 if (SortByAvailability == 1)
                 {
                     SortByAvailabilitySwitch();
@@ -103,17 +108,23 @@ namespace ZealandRoomBooking.ViewModel
                 {
                     SortByBuildingSwitch();
                 }
+            else
+            {
+                var messageDialog = new MessageDialog("Du kan kun booke et lokale op til 30 dage frem.");
+                messageDialog.Commands.Add(new UICommand("Ok", null));
+                await messageDialog.ShowAsync();
             }
             DateToString();
         }
 
-        public void DayBackwards()
+        public async void DayBackwards()
         {
             if (DaysAdded > 0)
             {
                 BookingDate = BookingDate.AddDays(-1);
                 DaysAdded--;
                 SetRoomStatus();
+
                 if (SortByAvailability == 1)
                 {
                     SortByAvailabilitySwitch();
@@ -121,8 +132,14 @@ namespace ZealandRoomBooking.ViewModel
                 if (SortByBuilding == 1)
                 {
                     SortByBuildingSwitch();
-                }
             }
+            else
+            {
+                var messageDialog = new MessageDialog("Du kan ikke gå tilbage i tiden og booke et lokale.");
+                messageDialog.Commands.Add(new UICommand("Ok", null));
+                await messageDialog.ShowAsync();
+            }
+  
             DateToString();
         }
 
@@ -154,8 +171,6 @@ namespace ZealandRoomBooking.ViewModel
                 SortByAvailability--;
                 AvailabilitySwitchColor = new SolidColorBrush(Colors.LightGray);
                 OnPropertyChanged(nameof(AvailabilitySwitchColor));
-
-                ListOfRooms = HomeViewModel.LokaleCollection;
             }
             SortRoomList();
             var userViewModel = new UserViewModel();
@@ -322,12 +337,13 @@ namespace ZealandRoomBooking.ViewModel
         //Sætter BookingStatus på hver lokale 
         public async void SetRoomStatus()
         {
+            var NoErrorsBookinger = ListOfBookinger;
             foreach (var room in ListOfRooms)
             {
                 room.BookingStatus = 0;
                 RefLokaler.ColorCodes(room);
             }
-            foreach (var booking in ListOfBookinger)
+            foreach (var booking in NoErrorsBookinger)
             {
                 if (booking.Date.Date == BookingDate.Date)
                 {
@@ -354,7 +370,6 @@ namespace ZealandRoomBooking.ViewModel
                                     }
                                 }
                             }
-
                             break;
                         }
                     }
@@ -374,7 +389,7 @@ namespace ZealandRoomBooking.ViewModel
         }
 
         //Booker lokaler med checks
-        public void BookRoom()
+        public async void BookRoom()
         {
             SelectedTempRoom();
             if (selectedRoom.Type == "Klasselokale")
@@ -383,18 +398,34 @@ namespace ZealandRoomBooking.ViewModel
                 {
                     BookingCheckElev();
                 }
+                else if (RefUser.CheckedUser.Usertype == "Elev" && selectedRoom.BookingStatus >= 2)
+                {
+                    var messageDialog = new MessageDialog("Dette lokale er allerede booket. Book et andet lokale, som er ledigt.");
+                    messageDialog.Commands.Add(new UICommand("Ok", null));
+                    await messageDialog.ShowAsync();
+                }
                 else
                 {
                     if (RefUser.CheckedUser.Usertype == "Lære" && selectedRoom.BookingStatus == 0)
                     {
                         BookingCheckLærer();
                     }
+                    else if (RefUser.CheckedUser.Usertype == "Lære" && selectedRoom.BookingStatus >= 0)
+                    {
+                        var messageDialog = new MessageDialog("Dette lokale er allerede booket. Book et andet lokale, som er ledigt.");
+                        messageDialog.Commands.Add(new UICommand("Ok", null));
+                        await messageDialog.ShowAsync();
+                    }
                     else
                     {
                         if (BookingDate.Date >= DateTime.Now.AddDays(3).Date && selectedRoom.BookingStatus <= 2 && RefUser.CheckedUser.Usertype == "Lære")
                         {
-                            DeleteElevBooking();
-                            BookingCheckLærer();
+                            var messageDialog = new MessageDialog("Er du sikker på at du vil overskrive elevens booking?");
+
+                            messageDialog.Commands.Add(new UICommand("Ja", new UICommandInvokedHandler(this.CommandInvokedHandler)));
+                            messageDialog.Commands.Add(new UICommand("Nej", null));
+
+                            await messageDialog.ShowAsync();
                         }
                     }
                 }
@@ -407,18 +438,34 @@ namespace ZealandRoomBooking.ViewModel
                     {
                         BookingCheckElev();
                     }
+                    else if (RefUser.CheckedUser.Usertype == "Elev" && selectedRoom.BookingStatus >= 2)
+                    {
+                        var messageDialog = new MessageDialog("Dette lokale er allerede booket. Book et andet lokale, som er ledigt.");
+                        messageDialog.Commands.Add(new UICommand("Ok", null));
+                        await messageDialog.ShowAsync();
+                    }
                     else
                     {
                         if (RefUser.CheckedUser.Usertype == "Lære" && selectedRoom.BookingStatus == 0)
                         {
                             BookingCheckLærer();
                         }
+                        else if (RefUser.CheckedUser.Usertype == "Lære" && selectedRoom.BookingStatus >= 0)
+                        {
+                            var messageDialog = new MessageDialog("Dette lokale er allerede booket. Book et andet lokale, som er ledigt.");
+                            messageDialog.Commands.Add(new UICommand("Ok", null));
+                            await messageDialog.ShowAsync();
+                        }
                         else
                         {
                             if (BookingDate.Date >= DateTime.Now.AddDays(3).Date && selectedRoom.BookingStatus <= 2 && RefUser.CheckedUser.Usertype == "Lære")
                             {
-                                DeleteElevBooking();
-                                BookingCheckLærer();
+                                var messageDialog = new MessageDialog("Er du sikker på at du vil overskrive elevens booking?");
+
+                                messageDialog.Commands.Add(new UICommand("Ja", new UICommandInvokedHandler(this.CommandInvokedHandler)));
+                                messageDialog.Commands.Add(new UICommand("Nej", null));
+
+                                await messageDialog.ShowAsync();
                             }
                         }
                     }
@@ -426,22 +473,33 @@ namespace ZealandRoomBooking.ViewModel
             }
         }
 
+        private void CommandInvokedHandler(IUICommand command)
+        {
+            DeleteElevBooking();
+            BookingCheckLærer();
+        }
+
+
         //Kun brugt når en lærer overskriver elevers booking
         public void DeleteElevBooking()
         {
+            var NoErrorsLokaleBookinger = ListOfLokaleBookinger;
+            var NoErrorsBookinger = ListOfBookinger;
             var roomStatus = selectedRoom.BookingStatus;
-            foreach (var booking in ListOfBookinger)
+            foreach (var booking in NoErrorsBookinger)
             {
                 if (roomStatus > 0 && booking.Date.Date == BookingDate.Date)
                 {
-                    foreach (var lokaleBooking in ListOfLokaleBookinger)
+                    foreach (var lokaleBooking in NoErrorsLokaleBookinger)
                     {
                         if (lokaleBooking.BookingId == booking.BookingId && lokaleBooking.LokaleId == selectedRoom.LokaleId)
                         {
+
                             PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
                             PersistencyService<Bookinger>.DeleteObject(booking.BookingId, "Bookinger");
                             roomStatus--;
                             break;
+
                         }
                     }
                 }
@@ -455,35 +513,51 @@ namespace ZealandRoomBooking.ViewModel
             }
         }
 
-        public void BookingCheckElev()
+
+
+        public async void BookingCheckElev()
         {
             var bookingOnThisDate = 0;
             var bookingCount = 0;
             foreach (var booking in ListOfBookinger)
             {
-                if (bookingOnThisDate == 0 && bookingCount <= 2)
+                if (bookingOnThisDate == 0)
                 {
-                    if (booking.UserId == RefUser.CheckedUser.UserId)
+                    if (bookingCount <= 2)
                     {
-                        bookingCount++;
-                        if (booking.Date.Date == BookingDate.Date)
+
+
+                        if (booking.UserId == RefUser.CheckedUser.UserId)
                         {
-                            bookingOnThisDate++;
+                            bookingCount++;
+                            if (booking.Date.Date == BookingDate.Date)
+                            {
+                                bookingOnThisDate++;
+                            }
                         }
                     }
                 }
-                else
-                {
-                    break;
-                }
+
             }
             if (bookingOnThisDate == 0 && bookingCount <= 2)
             {
                 CreateRoomBooking();
             }
+            else if (bookingCount > 2)
+            {
+                var messageDialog = new MessageDialog("Du har allerede booket 3 lokaler, det er ikke muligt at booke flere end 3.");
+                messageDialog.Commands.Add(new UICommand("Ok", null));
+                await messageDialog.ShowAsync();
+            }
+            else
+            {
+                var messageDialog = new MessageDialog("Du har allerede booket ét lokale idag.Det er kun muligt at booke ét lokale på samme dag.");
+                messageDialog.Commands.Add(new UICommand("Ok", null));
+                await messageDialog.ShowAsync();
+            }
         }
 
-        public void BookingCheckLærer()
+        public async void BookingCheckLærer()
         {
             var bookingOnThisDate = 0;
             foreach (var booking in ListOfBookinger)
@@ -504,6 +578,12 @@ namespace ZealandRoomBooking.ViewModel
             {
                 CreateRoomBooking();
             }
+            else
+            {
+                var messageDialog = new MessageDialog("Du har allerede booket 3 lokaler idag, det er ikke muligt at booke flere end 3 på denne dato.");
+                messageDialog.Commands.Add(new UICommand("Ok", null));
+                await messageDialog.ShowAsync();
+            }
         }
 
         public async void CreateRoomBooking()
@@ -518,6 +598,7 @@ namespace ZealandRoomBooking.ViewModel
             LokaleBookinger lokalebooking = new LokaleBookinger(getId, selectedRoom.LokaleId);
 
             await PersistencyService<LokaleBookinger>.PostObject("LokaleBookinger", lokalebooking);
+            ((Frame)Window.Current.Content).Navigate(typeof(View.MyBookingsPage));
         }
         #endregion
 

@@ -29,11 +29,11 @@ namespace ZealandRoomBooking.ViewModel
         {
             if (RefUser.CheckedUser.Usertype == "Elev")
             {
-                LoggedInUserText = "Elev";
+                LoggedInUserText = "Studerende";
             }
             else
             {
-                LoggedInUserText = "Lærer";
+                LoggedInUserText = "Underviser";
             }
         }
 

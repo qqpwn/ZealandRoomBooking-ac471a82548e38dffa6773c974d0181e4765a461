@@ -2,33 +2,34 @@
     x:Class="ZealandRoomBooking.View.MyBookingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ZealandRoomBooking.View"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:ZealandRoomBooking.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:ZealandRoomBooking.ViewModel"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
     <Page.DataContext>
-        <viewModel:MyBookingsViewModel/>
+        <viewModel:MyBookingsViewModel />
     </Page.DataContext>
 
-    <Grid>
+    <Grid Background="#fff387">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+
 
         <StackPanel Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Center">
             <TextBlock Text="Mine Bookinger" Margin="0,10,0,0" TextAlignment="Center" FontSize="45" FontWeight="Bold"/>
@@ -78,5 +79,6 @@
                 </interactivity:Interaction.Behaviors>
             </Button>
         </StackPanel>
+
     </Grid>
 </Page>
