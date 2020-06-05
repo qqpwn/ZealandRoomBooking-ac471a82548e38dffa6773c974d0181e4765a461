@@ -30,49 +30,53 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Mine Bookinger" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" TextAlignment="Center" VerticalAlignment="Center" FontSize="45" FontWeight="Bold"/>
+        <StackPanel Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <TextBlock Text="Mine Bookinger" Margin="0,10,0,0" TextAlignment="Center" FontSize="45" FontWeight="Bold"/>
 
-        <ListView Name="ListViewMyBookings" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="4" Margin="35,0,35,0" ItemsSource="{Binding MyBookingsList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedBooking, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ListViewItem>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Lokake:" FontSize="24"></TextBlock>
-                            <TextBlock Text="{Binding RoomName}" FontSize="24"></TextBlock>
-                            <TextBlock Text="  Dato: " FontSize="24"></TextBlock>
-                            <TextBlock Text="{Binding Date.Day}" FontSize="24"></TextBlock>
-                            <TextBlock Text="-" FontSize="24"></TextBlock>
-                            <TextBlock Text="{Binding Date.Month}" FontSize="24"></TextBlock>
-                            <TextBlock Text="-" FontSize="24"></TextBlock>
-                            <TextBlock Text="{Binding Date.Year}" FontSize="24"></TextBlock>
-                        </StackPanel>
-                    </ListViewItem>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            <ListView Name="ListViewMyBookings" Margin="0,10,0,0" Height="550" Width="380" ItemsSource="{Binding MyBookingsList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedBooking, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ListViewItem>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Lokake:" FontSize="24"></TextBlock>
+                                <TextBlock Text="{Binding RoomName}" FontSize="24"></TextBlock>
+                                <TextBlock Text="  Dato: " FontSize="24"></TextBlock>
+                                <TextBlock Text="{Binding Date.Day}" FontSize="24"></TextBlock>
+                                <TextBlock Text="-" FontSize="24"></TextBlock>
+                                <TextBlock Text="{Binding Date.Month}" FontSize="24"></TextBlock>
+                                <TextBlock Text="-" FontSize="24"></TextBlock>
+                                <TextBlock Text="{Binding Date.Year}" FontSize="24"></TextBlock>
+                            </StackPanel>
+                        </ListViewItem>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
 
-        <Button Content="Refresh" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold">
-            <interactivity:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="Click">
-                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.MyBookingsPage"></core:NavigateToPageAction>
-                </core:EventTriggerBehavior>
-            </interactivity:Interaction.Behaviors>
-        </Button>
+        <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button Content="Refresh" Height="50" Width="100" Margin="20,0,20,0" FontSize="22" FontWeight="Bold">
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Click">
+                        <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.MyBookingsPage"></core:NavigateToPageAction>
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+            </Button>
 
-        <Button Content="Home" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold">
-            <interactivity:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="Click">
-                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.Home"></core:NavigateToPageAction>
-                </core:EventTriggerBehavior>
-            </interactivity:Interaction.Behaviors>
-        </Button>
+            <Button Content="Home" Height="50" Width="100" Margin="20,0,20,0" FontSize="22" FontWeight="Bold">
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Click">
+                        <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.Home"></core:NavigateToPageAction>
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+            </Button>
 
-        <Button Content="Slet" Command="{Binding DeleteBookingCommand}" Grid.Row="6" Grid.Column="2" HorizontalAlignment="Center" Height="50" Width="100" FontSize="22" FontWeight="Bold">
-            <interactivity:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="Click">
-                    <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.MyBookingsPage"></core:NavigateToPageAction>
-                </core:EventTriggerBehavior>
-            </interactivity:Interaction.Behaviors>
-        </Button>
+            <Button Content="Slet" Command="{Binding DeleteBookingCommand}" Height="50" Width="100" Margin="20,0,20,0" FontSize="22" FontWeight="Bold">
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Click">
+                        <core:NavigateToPageAction TargetPage="ZealandRoomBooking.View.MyBookingsPage"></core:NavigateToPageAction>
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+            </Button>
+        </StackPanel>
     </Grid>
 </Page>
