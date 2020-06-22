@@ -4,8 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Popups;
 using ZealandRoomBooking.Model;
 
 namespace ZealandRoomBooking.Persistency
@@ -14,7 +16,7 @@ namespace ZealandRoomBooking.Persistency
     {
         public static ObservableCollection<T> HentCollection = new ObservableCollection<T>();
         public static T HentEtObject;
-        private const string ServerUri = "http://localhost:55911/";
+        private const string ServerUri = "https://wszealand20200524210951.azurewebsites.net/";
 
         public static HttpClientHandler MyClientHandler()
         {
