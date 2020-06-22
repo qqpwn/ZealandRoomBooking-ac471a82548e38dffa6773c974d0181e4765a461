@@ -28,12 +28,6 @@ namespace ZealandRoomBooking.ViewModel
     public class UserViewModel : INotifyPropertyChanged
     {
         #region Properties
-        public int LokaleId { get; set; }
-        public int Etage { get; set; }
-        public string Type { get; set; }
-        public string Navn { get; set; }
-        public string Bygning { get; set; }
-
         private string _dateBarString;
 
         public static ObservableCollection<Lokaler> ListOfRooms { get; set; } = new ObservableCollection<Lokaler>();
@@ -57,9 +51,6 @@ namespace ZealandRoomBooking.ViewModel
         public string AvailabilitySwitchColor { get; set; } = "#fff387";
         public string BuildingSwitchColor { get; set; } = "#fff387";
         public string FloorSwitchColor { get; set; } = "#fff387";
-        #endregion
-
-        #region DateBarString
         public string DateBarString
         {
             get => _dateBarString;
@@ -159,6 +150,8 @@ namespace ZealandRoomBooking.ViewModel
             ListOfLokaleBookinger = HomeViewModel.LokaleBookingerCollection;
         }
         #endregion
+
+        #region SortingMethods
 
         public void SortByAvailabilitySwitch()
         {
@@ -334,6 +327,7 @@ namespace ZealandRoomBooking.ViewModel
             }
             OnPropertyChanged(nameof(ListOfRooms));
         }
+        #endregion
 
         #region SetRoomStatusMethod
         //Sætter BookingStatus på hver lokale 

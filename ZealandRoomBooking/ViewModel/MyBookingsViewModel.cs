@@ -61,6 +61,7 @@ namespace ZealandRoomBooking.ViewModel
         //Henter den loggede inds brugers bookinger
         public void GetMyBookings()
         {
+            MyBookingsList.Clear();
             foreach (var booking in AllBookings)
             {
                 if (booking.UserId == refUser.CheckedUser.UserId)
@@ -104,8 +105,6 @@ namespace ZealandRoomBooking.ViewModel
 
                 await messageDialog.ShowAsync();
             }
-
-
         }
 
         private void CommandInvokedHandler(IUICommand command)
@@ -116,7 +115,8 @@ namespace ZealandRoomBooking.ViewModel
                 {
                     PersistencyService<LokaleBookinger>.DeleteObject(lokaleBooking.LBId, "LokaleBookinger");
                     PersistencyService<Bookinger>.DeleteObject(MyBookingsList[SelectedBooking].BookingId, "Bookinger");
-                    MyBookingsList.Remove(MyBookingsList[SelectedBooking]);
+                    GetAllBookingInfo();
+                    GetMyBookings();
                     OnPropertyChanged(nameof(MyBookingsList));
                 }
             }
