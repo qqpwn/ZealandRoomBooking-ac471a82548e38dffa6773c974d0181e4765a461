@@ -483,7 +483,6 @@ namespace ZealandRoomBooking.ViewModel
 
         private void CommandInvokedHandler(IUICommand command)
         {
-            DeleteElevBooking();
             BookingCheckLærer();
         }
 
@@ -584,6 +583,7 @@ namespace ZealandRoomBooking.ViewModel
             }
             if (bookingOnThisDate <= 2)
             {
+                DeleteElevBooking();
                 CreateRoomBooking();
             }
             else
