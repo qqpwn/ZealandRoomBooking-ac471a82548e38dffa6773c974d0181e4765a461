@@ -94,6 +94,11 @@ namespace ZealandRoomBooking.ViewModel
                     SortByAvailabilitySwitch();
                 }
 
+                if (SortByFloor == 1)
+                {
+                    SortByFloorSwitch();
+                }
+
                 if (SortByBuilding == 1)
                 {
                     SortByBuildingSwitch();
@@ -119,6 +124,11 @@ namespace ZealandRoomBooking.ViewModel
                 if (SortByAvailability == 1)
                 {
                     SortByAvailabilitySwitch();
+                }
+
+                if (SortByFloor == 1)
+                {
+                    SortByFloorSwitch();
                 }
 
                 if (SortByBuilding == 1)
@@ -528,21 +538,20 @@ namespace ZealandRoomBooking.ViewModel
             var bookingCount = 0;
             foreach (var booking in ListOfBookinger)
             {
-                if (bookingOnThisDate == 0)
+                if (bookingOnThisDate == 0 && bookingCount <= 2)
                 {
-                    if (bookingCount <= 2)
+                    if (booking.UserId == RefUser.CheckedUser.UserId)
                     {
-
-
-                        if (booking.UserId == RefUser.CheckedUser.UserId)
+                        bookingCount++;
+                        if (booking.Date.Date == BookingDate.Date)
                         {
-                            bookingCount++;
-                            if (booking.Date.Date == BookingDate.Date)
-                            {
-                                bookingOnThisDate++;
-                            }
+                            bookingOnThisDate++;
                         }
                     }
+                }
+                else
+                {
+                    break;
                 }
 
             }
