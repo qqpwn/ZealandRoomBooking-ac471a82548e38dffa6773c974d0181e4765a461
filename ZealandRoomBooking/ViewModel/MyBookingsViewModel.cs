@@ -118,6 +118,7 @@ namespace ZealandRoomBooking.ViewModel
                     GetAllBookingInfo();
                     GetMyBookings();
                     OnPropertyChanged(nameof(MyBookingsList));
+                    break;
                 }
             }
         }
